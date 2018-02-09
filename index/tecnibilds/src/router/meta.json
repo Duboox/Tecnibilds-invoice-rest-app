@@ -1,0 +1,27 @@
+{
+  "/": {
+    "title": "Tecnibilds - Web Development",
+    "description": "Empresa de desarrollo web",
+    "keywords": "Web, diseño, seo, development, design"
+  },
+  "/services": {
+    "title": "Tecnibilds - Servicios",
+    "description": "Empresa de desarrollo web",
+    "keywords": "Web, diseño, seo, development, design"
+  },
+  "/work": {
+    "title": "Tecnibilds - Trabajo",
+    "description": "Empresa de desarrollo web",
+    "keywords": "Web, diseño, seo, development, design"
+  },
+  "/about": {
+    "title": "Tecnibilds - Sobre nosotros",
+    "description": "Empresa de desarrollo web",
+    "keywords": "Web, diseño, seo, development, design"
+  },
+  "/contact": {
+    "title": "Tecnibilds - Contacto",
+    "description": "Empresa de desarrollo web",
+    "keywords": "Web, diseño, seo, development, design"
+  }
+}

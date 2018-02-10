@@ -35,15 +35,20 @@ import VueCharts from 'vue-chartjs'
 Vue.use(VueCharts);
 
 // Vue-Laravel Echo
-Vue.use(VueEcho, {
-  broadcaster: 'pusher',
-  key: 'ee24236ae9099c5fe4ed',
-  cluster: 'us2',
-  authEndpoint: Vue.prototype.$configs.ApiUrl + 'broadcasting/auth',
-  /* app/Http/Kernel.php. VerifyCSRFToken Removed */
-  encrypted: true
-});
-
+if(store.getters.isAuthenticated){
+  Vue.use(VueEcho, {
+    broadcaster: 'pusher',
+    key: 'c69db8f303016bcf030f',
+    cluster: 'us2',
+    auth:{
+      headers: store.getters.getHeader,
+    },
+    namespace: 'Tbappback.Events',
+    authEndpoint: Vue.prototype.$configs.ApiUrl + 'broadcasting/auth',
+    /* app/Http/Kernel.php. VerifyCSRFToken Removed */
+    encrypted: true
+  });
+}
 
 // Vue-Progressbar
 import VueProgressBar from 'vue-progressbar'
@@ -74,9 +79,9 @@ router.beforeEach(
           next()
         }
       } else if(to.matched.some(record => record.meta.forAuth)) {
-        /* si es para visitantes y esta logeado ir a /home */
+        /* si es para auth y no esta logeado ir a / */
         if( ! store.getters.isAuthenticated ) {
-          next({ path: '/login'})
+          next({ path: '/'})
         } else {
           next()
         }

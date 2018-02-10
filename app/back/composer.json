@@ -12,7 +12,7 @@
         "laravel/passport": "^4.0",
         "laravel/tinker": "~1.0",
         "nesbot/carbon": "^1.22",
-        "pusher/pusher-php-server": "~3.0"
+        "pusher/pusher-php-server": "^3.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

@@ -11,12 +11,10 @@ use Tbappback\Events\ChatMessagePosted;
 
 class ChatMessageController extends Controller
 {
-    public function postMessage($chatMessageId)
+    public function chatMessagePosted($chatMessageId)
     {
         $chatMessage = ChatMessage::findOrFail($chatMessageId);
         $user = User::findOrFail($chatMessage->user_id);
-
-        // Order shipment logic...
 
         event(new ChatMessagePosted($chatMessage, $user));
     }
@@ -52,6 +50,8 @@ class ChatMessageController extends Controller
         ]);
 
         $message = ChatMessage::create($request->all());
+
+        $this->chatMessagePosted($message->id);
 
         return response()
             ->json([

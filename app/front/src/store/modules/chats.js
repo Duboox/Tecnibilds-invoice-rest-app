@@ -37,21 +37,13 @@ export default {
             })
       })
     },
-    saveMessage({commit, getters, state, rootState}, data) {
+    sendMessage({commit, getters, state, rootState}, data) {
       return new Promise((resolve, reject) => {
         axios[config.saveMessagesMethod](config.apiUrl + config.saveMessagesRequest, data, {headers: getters.getHeader})
             .then(response => {
               let res = response.data;
               if (res.saved = true) {
-                let commitMessage = {
-                  user_id:  rootState.users.authenticatedUser.id,
-                  message: state.newMessage.model.message,
-                  user: {
-                    name: rootState.users.authenticatedUser.name,
-                    picture: rootState.users.authenticatedUser.picture,
-                  },
-                };
-                commit('SAVE_MESSAGE', commitMessage);
+                console.log("message sent!")
               }
             })
             .catch(error => {

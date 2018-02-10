@@ -1,4 +1,8 @@
 <style lang="scss" scoped>
+    #chat_messages {
+        max-height: 400px;
+        overflow-y: scroll;
+    }
 </style>
 
 <template>
@@ -23,8 +27,18 @@
                                 hide-details
                         ></v-text-field>
                     </v-flex>
+                    <v-spacer></v-spacer>
+                    <v-badge overlay right color="purple" overlap>
+                        <span slot="badge">{{usersInChat.length}}</span>
+                        <v-icon
+                                large
+                                color="grey lighten-1"
+                        >
+                            account_circle
+                        </v-icon>
+                    </v-badge>
                 </v-card-title>
-                <v-list three-line>
+                <v-list id="chat_messages" three-line>
                     <template v-for="item in filteredMessages">
                         <v-list-tile avatar v-bind:key="item.title" @click="">
                             <v-list-tile-avatar>
@@ -83,6 +97,7 @@
         ApiUsersPics: this.$configs.ApiUrl + 'images/users/',
         search: '',
         messageText: '',
+        usersInChat: ''
       }
     },
     computed: {
@@ -99,14 +114,31 @@
     created() {
       let vm = this;
       vm.setMessages();
-
       vm.$echo.join('chatRoom')
-          .here()
-          .joining()
-          .leaving()
-          .listen('ChatMessagePosted', (payload) => {
-        console.log(payload);
-      });
+          .here((users) => {
+            vm.usersInChat = users;
+          })
+          .joining((user) => {
+            vm.usersInChat.push(user)
+          })
+          .leaving((user) => {
+            vm.usersInChat = vm.usersInChat.filter(u => u != user)
+          })
+          .listen('ChatMessagePosted', (e) => {
+            let CommitMessage = {
+              created_at: e.chatMessage.created_at,
+              id: e.chatMessage.id,
+              message: e.chatMessage.message,
+              updated_at: e.chatMessage.updated_at,
+              user_id: e.chatMessage.user_id,
+              user: e.user
+            };
+            vm.$store.commit('SAVE_MESSAGE', CommitMessage);
+            vm.toBottom('chat_messages');
+          });
+    },
+    mounted() {
+      this.toBottom('chat_messages');
     },
     methods: {
       setMessages() {
@@ -124,10 +156,10 @@
         let vm = this;
         vm.$Progress.start();
         let data = {
-          user_id:  vm.$store.state.users.authenticatedUser.id,
+          user_id: vm.$store.state.users.authenticatedUser.id,
           message: vm.newMessage.model.message,
         };
-        vm.$store.dispatch('saveMessage', data)
+        vm.$store.dispatch('sendMessage', data)
             .then(response => {
               vm.$Progress.finish();
             })
@@ -136,6 +168,10 @@
             })
         vm.messageText = '';
       },
+      toBottom(id) {
+        let el = document.getElementById(id);
+        el.scrollTop = el.scrollHeight;
+      }
     }
   }
 </script>

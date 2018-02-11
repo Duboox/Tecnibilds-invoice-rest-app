@@ -21,6 +21,9 @@ class ChatMessageController extends Controller
 
     public function index()
     {
+        $chatMessagesExpired = ChatMessage::where('created_at', '<=', Carbon::now()->subDays(1));
+        $chatMessagesExpired->delete();
+
         $chatMessages = ChatMessage::with('user')->get();
         /* foreach ($chatMessages as $chatMessage) {
             $chatMessage->created_at->diffForHumans();

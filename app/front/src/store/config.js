@@ -16,6 +16,9 @@ export default {
   getProductMethod: 'get',
   getProductRequest: '/api/product',
 
+  saveEditProductMethod: 'put',
+  saveEditProductRequest: '/api/product/',
+
   saveProductMethod: 'post',
   saveProductRequest: '/api/product',
 

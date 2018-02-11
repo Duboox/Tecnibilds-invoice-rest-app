@@ -54,12 +54,25 @@ export default {
             })
       })
     },
-    saveProduct(data) {
+    saveEditProduct({getters}, product) {
       return new Promise((resolve, reject) => {
-        axios[config.saveProductMethod](config.apiUrl + config.saveProductRequest, data)
+        axios[config.saveEditProductMethod](config.apiUrl + config.saveEditProductRequest + product.model.id, product.model, {headers: getters.getHeader})
             .then(function (response) {
               if (response.data.saved) {
-                state.commit('SAVE_PRODUCT', data);
+                resolve(response)
+              }
+            })
+            .catch(error => {
+              reject(error);
+            })
+      })
+    },
+    saveProduct({getters}, product) {
+      return new Promise((resolve, reject) => {
+        axios[config.saveProductMethod](config.apiUrl + config.saveProductRequest, product.model, {headers: getters.getHeader})
+            .then(function (response) {
+              if (response.data.saved) {
+                resolve(response)
               }
             })
             .catch(error => {
@@ -70,12 +83,12 @@ export default {
     removeSelectedProduct(state) {
       state.commit('REMOVE_SELECTED_PRODUCT')
     },
-    removeProduct(state, product) {
+    removeProduct({getters, commit}, product) {
       return new Promise((resolve, reject) => {
-        axios[config.deleteProductMethod](config.apiUrl + config.getProductRequest + '/' + product.id)
+        axios[config.deleteProductMethod](config.apiUrl + config.getProductRequest + '/' + product.id, {headers: getters.getHeader})
             .then(function (response) {
               if (response.data.deleted) {
-                state.commit('REMOVE_PRODUCT', product);
+                commit('REMOVE_PRODUCT', product);
                 resolve(response);
               }
               console.log(response)

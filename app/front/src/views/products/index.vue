@@ -123,7 +123,7 @@
       return {
         pageTitle: 'Products',
         ratingClass: null,
-        ApiProductsPics: this.$configs.ApiUrl + '/images/products/',
+        ApiProductsPics: this.$configs.ApiUrl + 'images/products/',
         search: '',
         maxStars:5,
         snackBar: false,
@@ -141,7 +141,7 @@
       filteredProducts: function () {
         return this.products.model.filter((product) => {
           return product.name.toLowerCase().match(this.search);
-        });
+        }).reverse();
       }
     },
     created() {

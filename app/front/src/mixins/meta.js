@@ -8,6 +8,7 @@ export default {
   },
 
   created () {
+    this.setMeta()
   },
 
   mounted () {
@@ -17,12 +18,11 @@ export default {
   methods: {
     setMeta () {
       if (typeof document === 'undefined') {
-        return
-        const metaData = meta[this.$route.path] || {}
-        document.title = metaData.title
-        document.querySelector('meta[name="description"]').setAttribute('content', metaData.description)
-        document.querySelector('meta[name="keywords"]').setAttribute('content', metaData.keywords)
       }
+      let metaData = meta[this.$route.path] || {}
+      document.title = metaData.title
+      document.querySelector('meta[name="description"]').setAttribute('content', metaData.description)
+      document.querySelector('meta[name="keywords"]').setAttribute('content', metaData.keywords)
     }
   }
 }

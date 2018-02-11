@@ -35,14 +35,14 @@
                         <v-icon>arrow_back</v-icon>
                     </v-btn>
                 </v-card-title>
-                <v-container fluid grid-list-xl>
+                <v-container grid-list-md fluid>
                     <v-layout align-content-center justify-center align-center wrap>
-                        <v-flex xs10>
+                        <v-flex xs10 md10 lg10>
                             <v-form>
                                 <!-- File Input here -->
                                 <input v-show="false" ref="fileInput" id="file" type="file" accept=".png, .jpg, .jpeg"
                                        @change="previewFiles">
-                                <v-layout row>
+                                <v-layout row wrap>
                                     <v-layout align-content-center justify-center align-center>
                                         <v-flex>
                                             <v-card class="products-image-card elevation-5">
@@ -57,7 +57,7 @@
                                                     </v-layout>
                                                 </v-card-media>
                                                 <v-card-actions color="primary">
-                                                    <span class="caption grey--text product-image-name">{{ product.model.picture }}</span>
+                                                    <span class="caption grey--text product-image-name"></span>
                                                     <v-spacer></v-spacer>
                                                     <v-btn icon flat v-if="image" v-on:click="removeImage()">
                                                         <v-icon>close</v-icon>
@@ -88,8 +88,8 @@
                                         </v-flex>
                                     </v-layout>
                                 </v-layout>
-                                <v-layout row justify-space-around>
-                                    <v-flex xs3>
+                                <v-layout row justify-space-around wrap>
+                                    <v-flex xs10 md6 lg3>
                                         <v-text-field
                                                 label="Marca"
                                                 v-model="product.model.brand"
@@ -97,7 +97,7 @@
                                                 required
                                         ></v-text-field>
                                     </v-flex>
-                                    <v-flex xs3>
+                                    <v-flex xs10 md6 lg3>
                                         <v-text-field
                                                 label="Calificación"
                                                 v-model="product.model.rating"
@@ -105,7 +105,7 @@
                                                 required
                                         ></v-text-field>
                                     </v-flex>
-                                    <v-flex xs3>
+                                    <v-flex xs10 md6 lg3>
                                         <v-text-field
                                                 label="Nº en stock"
                                                 v-model="product.model.stock"
@@ -114,8 +114,8 @@
                                         ></v-text-field>
                                     </v-flex>
                                 </v-layout>
-                                <v-layout row justify-space-around>
-                                    <v-flex xs3>
+                                <v-layout row justify-space-around wrap>
+                                    <v-flex xs10 md6 lg3>
                                         <v-text-field
                                                 label="COD REF"
                                                 v-model="product.model.cod"
@@ -123,7 +123,7 @@
                                                 required
                                         ></v-text-field>
                                     </v-flex>
-                                    <v-flex xs3>
+                                    <v-flex xs10 md6 lg3>
                                         <v-text-field
                                                 label="Precio"
                                                 v-model="product.model.unit_price"
@@ -138,7 +138,8 @@
                 </v-container>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" flat>Guardar</v-btn>
+                    <v-btn v-if="mode === 'edit'" color="primary" v-on:click="saveEditedProduct()" flat>Guardar</v-btn>
+                    <v-btn v-else color="primary" v-on:click="saveCreatedProduct()" flat>Crear</v-btn>
                 </v-card-actions>
             </v-card>
         </v-container>
@@ -160,15 +161,16 @@
     data () {
       return {
         pageTitle: 'Añadir Producto',
-        ApiProductsPics: this.$configs.ApiUrl + '/images/products/',
+        ApiProductsPics: this.$configs.ApiUrl + 'images/products/',
         snackBar: false,
         successMessage: '',
         dbImageTmp: '',
         image: '',
+        mode: this.$route.meta.mode,
       }
     },
     created() {
-      if (this.$route.meta.mode === 'edit') {
+      if (this.mode === 'edit') {
         this.pageTitle = 'Editar Producto';
         this.setProduct(this.$route.params.id);
       }
@@ -224,6 +226,40 @@
         }
         this.product.model.picture = 'default.png';
         this.image = '';
+      },
+      saveEditedProduct() {
+        let vm = this;
+        vm.$Progress.start();
+        let product = vm.product;
+        if(vm.image){
+          product.model.picture = vm.image;
+        }
+        vm.$store.dispatch('saveEditProduct', product)
+            .then(response => {
+              vm.$Progress.finish();
+              vm.successMessage = '¡Producto editado exitosamente!'
+              vm.snackBar = true;
+            })
+            .catch(error => {
+              vm.$Progress.fail();
+            })
+      },
+      saveCreatedProduct() {
+        let vm = this;
+        vm.$Progress.start();
+        let product = vm.product;
+        product.model.picture = vm.image;
+        product.model.user_id = vm.$store.state.users.authenticatedUser.id;
+        console.log(product);
+        vm.$store.dispatch('saveProduct', product)
+            .then(response => {
+              vm.$Progress.finish();
+              vm.successMessage = '¡Producto creado exitosamente!'
+              vm.snackBar = true;
+            })
+            .catch(error => {
+              vm.$Progress.fail();
+            })
       },
     },
   }

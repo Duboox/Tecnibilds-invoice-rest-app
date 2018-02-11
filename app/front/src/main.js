@@ -34,6 +34,10 @@ import { store } from './store/store'
 import VueCharts from 'vue-chartjs'
 Vue.use(VueCharts);
 
+// Chat Scroll Package
+import ChatScroll from './packages/chat-scroll/chat-scroll'
+Vue.use(ChatScroll);
+
 // Vue-Laravel Echo
 if(store.getters.isAuthenticated){
   Vue.use(VueEcho, {

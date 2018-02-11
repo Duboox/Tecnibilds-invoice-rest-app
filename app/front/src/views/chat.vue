@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-    #chat_messages {
+    .chat_messages {
         max-height: 400px;
         overflow-y: scroll;
     }
@@ -38,7 +38,7 @@
                         </v-icon>
                     </v-badge>
                 </v-card-title>
-                <v-list id="chat_messages" three-line>
+                <v-list class="chat_messages" three-line v-chat-scroll>
                     <template v-for="item in filteredMessages">
                         <v-list-tile avatar v-bind:key="item.title" @click="">
                             <v-list-tile-avatar>
@@ -134,11 +134,9 @@
               user: e.user
             };
             vm.$store.commit('SAVE_MESSAGE', CommitMessage);
-            vm.toBottom('chat_messages');
           });
     },
     mounted() {
-      this.toBottom('chat_messages');
     },
     methods: {
       setMessages() {

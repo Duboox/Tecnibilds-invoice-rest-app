@@ -51,13 +51,7 @@ class ProductController extends Controller
             $pic = Image::make($decodedPic)->fit(500, 500, function ($constraint) {
                 $constraint->upsize();
             })->encode('jpg', 75);
-
-            if(str_contains($explodedPic[0], 'jpeg')) {
-                $extension = 'jpg';
-            } else {
-                $extension = 'png';
-            }
-            $fileName = str_random().'.'.$extension;
+            $fileName = str_random().'.jpg';
 
             /* Usa el disco "product_pictures" ubicado en "config/filesystems.php" */
             Storage::disk('product_pictures')->put($fileName, $pic);
@@ -101,12 +95,7 @@ class ProductController extends Controller
                     $constraint->upsize();
                 })->encode('jpg', 75);
 
-                if(str_contains($explodedPic[0], 'jpeg')) {
-                    $extension = 'jpg';
-                } else {
-                    $extension = 'png';
-                }
-                $fileName = str_random().'.'.$extension;
+                $fileName = str_random().'.jpg';
                 Storage::disk('product_pictures')->put($fileName, $pic);
                 $requestData = $request->all();
                 $requestData['picture'] = $fileName;

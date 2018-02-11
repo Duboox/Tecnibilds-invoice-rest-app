@@ -12,6 +12,10 @@ export default {
   registerMethod: 'post',
   registerRequest: '/api/register',
 
+  /* DASHBOARD ANALYTICS */
+  getAnalyticsMethod: 'get',
+  getAnalyticsRequest: '/api/dashboard',
+
   /* PRODUCTS */
   getProductMethod: 'get',
   getProductRequest: '/api/product',
@@ -24,6 +28,19 @@ export default {
 
   deleteProductMethod: 'delete',
   deleteProductRequest: '/api/product',
+
+  /* EMPLOYEES */
+  getEmployeeMethod: 'get',
+  getEmployeeRequest: '/api/employee',
+
+  saveEditEmployeeMethod: 'put',
+  saveEditEmployeeRequest: '/api/employee/',
+
+  saveEmployeeMethod: 'post',
+  saveEmployeeRequest: '/api/employee',
+
+  deleteEmployeeMethod: 'delete',
+  deleteEmployeeRequest: '/api/employee',
 
   /* Chat Messages */
   getMessagesMethod: 'get',

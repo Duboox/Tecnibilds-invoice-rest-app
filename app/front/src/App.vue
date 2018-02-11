@@ -244,7 +244,7 @@
           {icon: 'content_copy', text: 'Productos', to: '/products'},
           {icon: 'insert_chart', text: 'Analytics', to: '/analytics'},
           {icon: 'supervisor_account', text: 'Usuarios', to: '/users'},
-          {icon: 'perm_identity', text: 'Personal', to: '/personal'},
+          {icon: 'perm_identity', text: 'Empleados', to: '/employees'},
           {icon: 'chat', text: 'Chat', to: '/chat'},
             /* {
              icon: 'keyboard_arrow_up',

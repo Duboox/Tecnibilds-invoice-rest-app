@@ -26,7 +26,7 @@
                         <v-text-field
                                 append-icon="search"
                                 v-model="search"
-                                label="Buscar"
+                                label="Buscar Producto"
                                 single-line
                                 hide-details
                         ></v-text-field>
@@ -92,7 +92,7 @@
                     </v-btn>
                 </v-card-title>
                 <v-card-text>
-                    <span>¿Estas seguro que deseas borrar el producto {{ selectedProduct.name }}?</span>
+                    <span>¿Estas seguro que deseas borrar el producto <span class="body-2">{{ selectedProduct.name }}</span>?</span>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -159,14 +159,6 @@
             .catch(error => {
               vm.$Progress.fail();
             })
-      },
-      changeSort (column) {
-        if (this.pagination.sortBy === column) {
-          this.pagination.descending = !this.pagination.descending
-        } else {
-          this.pagination.sortBy = column;
-          this.pagination.descending = false
-        }
       },
       removeProduct(product) {
         let vm = this;

@@ -42,6 +42,11 @@ return [
     */
 
     'disks' => [
+        'employee_pictures' => [
+            'driver' => 'local',
+            'root' => public_path('images/employees'),
+        ],
+
         'product_pictures' => [
             'driver' => 'local',
             'root' => public_path('images/products'),

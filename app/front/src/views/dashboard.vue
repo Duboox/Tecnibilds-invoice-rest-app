@@ -115,6 +115,7 @@
             <!-- Calendar -->
             <v-flex xs11 md6 lg6>
                 <v-date-picker
+                        full-width
                         class="ma-3"
                         color="green lighten-1"
                         v-model="datePicker"
@@ -128,6 +129,7 @@
 </template>
 
 <script>
+  import {mapGetters, mapActions} from 'vuex';
   import LineChart from '../components/charts/LineChart'
   export default {
     components: {LineChart},
@@ -135,44 +137,12 @@
       return {
         pageTitle: 'Inicio',
         datePicker: null,
-        posts: [
-          {header: 'Today'},
-          {
-            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
-            title: 'Brunch this weekend?',
-            subtitle: "<span class='grey--text text--darken-2'>Ali Connors</span> — I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-          },
-          {divider: true, inset: true},
-          {
-            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
-            title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-            subtitle: "<span class='grey--text text--darken-2'>to Alex, Scott, Jennifer</span> — Wish I could come, but I'm out of town this weekend."
-          },
-          {divider: true, inset: true},
-          {
-            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
-            title: 'Oui oui',
-            subtitle: "<span class='grey--text text--darken-2'>Sandra Adams</span> — Do you have Paris recommendations? Have you ever been?"
-          },
-          {divider: true, inset: true},
-          {
-            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
-            title: 'Birthday gift',
-            subtitle: "<span class='grey--text text--darken-2'>Trevor Hansen</span> — Have any ideas about what we should get Heidi for her birthday?"
-          },
-          {divider: true, inset: true},
-          {
-            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
-            title: 'Recipe to try',
-            subtitle: "<span class='grey--text text--darken-2'>Britta Holt</span> — We should eat this: Grate, Squash, Corn, and tomatillo Tacos."
-          },
-        ],
         simpleCards: [
           {
             icon: 'account_circle',
             color: 'warning',
-            title: '123 Usuarios',
-            subTitle: '3 Nuevos'
+            title: '0 Usuarios',
+            subTitle: '0 Nuevos la ultima semana'
           },
           {
             icon: 'event',
@@ -313,8 +283,63 @@
             },
           }
         ],
-
+        posts: [
+          {header: 'Today'},
+          {
+            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
+            title: 'Brunch this weekend?',
+            subtitle: "<span class='grey--text text--darken-2'>Ali Connors</span> — I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
+          },
+          {divider: true, inset: true},
+          {
+            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
+            title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
+            subtitle: "<span class='grey--text text--darken-2'>to Alex, Scott, Jennifer</span> — Wish I could come, but I'm out of town this weekend."
+          },
+          {divider: true, inset: true},
+          {
+            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
+            title: 'Oui oui',
+            subtitle: "<span class='grey--text text--darken-2'>Sandra Adams</span> — Do you have Paris recommendations? Have you ever been?"
+          },
+          {divider: true, inset: true},
+          {
+            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
+            title: 'Birthday gift',
+            subtitle: "<span class='grey--text text--darken-2'>Trevor Hansen</span> — Have any ideas about what we should get Heidi for her birthday?"
+          },
+          {divider: true, inset: true},
+          {
+            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
+            title: 'Recipe to try',
+            subtitle: "<span class='grey--text text--darken-2'>Britta Holt</span> — We should eat this: Grate, Squash, Corn, and tomatillo Tacos."
+          },
+        ],
       }
+    },
+    computed: {
+      ...mapGetters({
+        analytics: 'getAnalytics'
+      }),
+    },
+    created() {
+      let vm = this;
+      vm.setAnalytics();
+      vm.simpleCards[0].title = vm.analytics.users.totalUsers + ' Usuarios';
+      vm.simpleCards[0].subTitle = vm.analytics.users.newUsers + ' Nuevos la ultima semana';
+    },
+    methods: {
+      setAnalytics() {
+        let vm = this;
+        vm.$Progress.start();
+        vm.$store.dispatch('setAnalytics')
+            .then(response => {
+              vm.$Progress.finish();
+            })
+            .catch(error => {
+              vm.$Progress.fail();
+            })
+      },
     }
   }
 </script>

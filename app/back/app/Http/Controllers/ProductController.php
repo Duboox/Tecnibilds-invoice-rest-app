@@ -117,8 +117,10 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        Storage::disk('product_pictures')->delete($product->picture);
-
+        $productPic = $product->picture;
+        if ($productPic <> "default.png") {
+            Storage::disk('product_pictures')->delete($productPic);
+        }
         $product->delete();
 
         return response()

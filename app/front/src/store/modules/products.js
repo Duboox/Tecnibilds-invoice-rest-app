@@ -85,7 +85,7 @@ export default {
     },
     removeProduct({getters, commit}, product) {
       return new Promise((resolve, reject) => {
-        axios[config.deleteProductMethod](config.apiUrl + config.getProductRequest + '/' + product.id, {headers: getters.getHeader})
+        axios[config.deleteProductMethod](config.apiUrl + config.deleteProductRequest + '/' + product.id, {headers: getters.getHeader})
             .then(function (response) {
               if (response.data.deleted) {
                 commit('REMOVE_PRODUCT', product);

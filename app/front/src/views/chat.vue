@@ -136,8 +136,6 @@
             vm.$store.commit('SAVE_MESSAGE', CommitMessage);
           });
     },
-    mounted() {
-    },
     methods: {
       setMessages() {
         let vm = this;
@@ -166,10 +164,6 @@
             })
         vm.messageText = '';
       },
-      toBottom(id) {
-        let el = document.getElementById(id);
-        el.scrollTop = el.scrollHeight;
-      }
     }
   }
 </script>

@@ -30,15 +30,28 @@
     "description": "Empresa de desarrollo websssss",
     "keywords": "Web, diseño, seo, development, design"
   },
-  "/sales": {
+  "/employees": {
     "forAuth": true,
-    "title": "Tecnibilds - Ventas",
+    "title": "Tecnibilds - Empleados",
     "description": "Empresa de desarrollo web",
     "keywords": "Web, diseño, seo, development, design"
   },
-  "/personal": {
+  "/employee/create": {
     "forAuth": true,
-    "title": "Tecnibilds - Personal",
+    "title": "Tecnibilds - Empleados - Crear",
+    "description": "Empresa de desarrollo web",
+    "keywords": "Web, diseño, seo, development, design"
+  },
+  "/employee/edit/*": {
+    "forAuth": true,
+    "mode": "edit",
+    "title": "Tecnibilds - Empleados - Editar",
+    "description": "Empresa de desarrollo websssss",
+    "keywords": "Web, diseño, seo, development, design"
+  },
+  "/sales": {
+    "forAuth": true,
+    "title": "Tecnibilds - Ventas",
     "description": "Empresa de desarrollo web",
     "keywords": "Web, diseño, seo, development, design"
   },

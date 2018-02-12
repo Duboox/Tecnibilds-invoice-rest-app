@@ -24,7 +24,7 @@ class LikeTableSeeder extends Seeder
             Like::create([
                 'user_id' => User::all()->random()->id,
                 'post_id' => Post::all()->random()->id,
-                'comment_id' => null
+                'post_comment_id' => null
             ]);
         }
 
@@ -33,7 +33,7 @@ class LikeTableSeeder extends Seeder
             Like::create([
                 'user_id' => User::all()->random()->id,
                 'post_id' => null,
-                'comment_id' => PostComment::all()->random()->id
+                'post_comment_id' => PostComment::all()->random()->id
             ]);
         }
     }

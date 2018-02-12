@@ -2,6 +2,11 @@
     .DashCharts {
         max-height: 200px;
     }
+
+    .posts {
+        max-height: 310px;
+        overflow-y: scroll;
+    }
 </style>
 
 <template>
@@ -95,21 +100,85 @@
                             </v-list>
                         </v-menu>
                     </v-toolbar>
-                    <v-list three-line>
-                        <template v-for="item in posts">
-                            <v-subheader v-if="item.header" v-text="item.header"></v-subheader>
-                            <v-divider v-else-if="item.divider" v-bind:inset="item.inset"></v-divider>
-                            <v-list-tile avatar v-else v-bind:key="item.title" @click="">
-                                <v-list-tile-avatar>
-                                    <img v-bind:src="item.avatar"/>
-                                </v-list-tile-avatar>
-                                <v-list-tile-content>
-                                    <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                                    <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
-                                </v-list-tile-content>
-                            </v-list-tile>
-                        </template>
-                    </v-list>
+                    <v-expansion-panel focusable class="posts" v-chat-scroll>
+                        <v-expansion-panel-content v-for="post in filteredPosts" :key="post.id">
+                            <div slot="header">
+                                <v-layout row>
+                                    <v-flex xs1>
+                                        <v-layout align-center>
+                                            <v-avatar size="32px">
+                                                <img v-bind:src="ApiUsersPics + post.user.picture"
+                                                     :alt="post.user.name"/>
+                                            </v-avatar>
+                                        </v-layout>
+                                    </v-flex>
+                                    <v-flex xs11>
+                                        <v-layout row align-start>
+                                            <v-layout column>
+                                                <span class="caption mr-3" color="blue">{{ post.user.name }}</span>
+                                                <span class="caption grey--text">{{post.created_at}}</span>
+                                            </v-layout>
+                                            <v-layout column>
+                                                <span class="body-1">{{post.content}}</span>
+                                            </v-layout>
+                                        </v-layout>
+                                    </v-flex>
+                                </v-layout>
+                            </div>
+                            <v-card>
+                                <v-layout align-content-center justify-center align-center>
+                                    <v-flex xs11>
+                                        <div v-for="comment in post.post_comments" :key="comment.id"
+                                             class="grey lighten-3">
+                                            <v-card-text>
+                                                <v-layout row>
+                                                    <v-flex xs1>
+                                                        <v-layout align-center>
+                                                            <v-avatar size="32px">
+                                                                <img v-bind:src="ApiUsersPics + comment.user.picture"
+                                                                     :alt="comment.user.name"/>
+                                                            </v-avatar>
+                                                        </v-layout>
+                                                    </v-flex>
+                                                    <v-flex xs11>
+                                                        <v-layout row align-start>
+                                                            <v-layout column>
+                                                                <span class="caption mr-3" color="blue">{{comment.user.name}}</span>
+                                                                <span class="caption grey--text">{{comment.created_at}}</span>
+                                                            </v-layout>
+                                                            <v-layout column>
+                                                                <span class="body-1">{{comment.content}}</span>
+                                                            </v-layout>
+                                                        </v-layout>
+                                                    </v-flex>
+                                                </v-layout>
+                                            </v-card-text>
+                                            <v-divider></v-divider>
+                                        </div>
+                                        <v-card-actions>
+                                            <v-text-field
+                                                    label="Escribe tu Comentario..."
+                                                    v-model="newPostComment"
+                                                    id="newPostComment"
+                                                    name="newPostComment"
+                                                    v-on:keypress.enter="sendNewComment(post.id)"
+                                                    required
+                                            ></v-text-field>
+                                            <v-btn icon>
+                                                <v-icon color="grey">attach_file</v-icon>
+                                            </v-btn>
+                                            <v-btn icon>
+                                                <v-icon color="grey">camera_alt</v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-on:click="sendNewComment(post.id)">
+                                                <v-icon color="blue">send</v-icon>
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-flex>
+                                </v-layout>
+                            </v-card>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
                 </v-card>
             </v-flex>
             <!-- Calendar -->
@@ -136,6 +205,9 @@
       return {
         pageTitle: 'Inicio',
         datePicker: null,
+        search: '',
+        ApiUsersPics: this.$configs.ApiUrl + 'images/users/',
+        newPostComment: '',
         simpleCards: [
           {
             icon: 'account_circle',
@@ -282,63 +354,37 @@
             },
           }
         ],
-        posts: [
-          {header: 'Today'},
-          {
-            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
-            title: 'Brunch this weekend?',
-            subtitle: "<span class='grey--text text--darken-2'>Ali Connors</span> — I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-          },
-          {divider: true, inset: true},
-          {
-            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
-            title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-            subtitle: "<span class='grey--text text--darken-2'>to Alex, Scott, Jennifer</span> — Wish I could come, but I'm out of town this weekend."
-          },
-          {divider: true, inset: true},
-          {
-            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
-            title: 'Oui oui',
-            subtitle: "<span class='grey--text text--darken-2'>Sandra Adams</span> — Do you have Paris recommendations? Have you ever been?"
-          },
-          {divider: true, inset: true},
-          {
-            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
-            title: 'Birthday gift',
-            subtitle: "<span class='grey--text text--darken-2'>Trevor Hansen</span> — Have any ideas about what we should get Heidi for her birthday?"
-          },
-          {divider: true, inset: true},
-          {
-            avatar: 'http://127.0.0.1:8000/images/users/default.jpg',
-            title: 'Recipe to try',
-            subtitle: "<span class='grey--text text--darken-2'>Britta Holt</span> — We should eat this: Grate, Squash, Corn, and tomatillo Tacos."
-          },
-        ],
       }
     },
     computed: {
       ...mapGetters({
-        analytics: 'getAnalytics'
+        analytics: 'getAnalytics',
+        posts: 'getPosts'
       }),
+      filteredPosts: function () {
+        return this.posts.newPosts.filter((posts) => {
+          return posts.content.toLowerCase().match(this.search);
+        });
+      },
     },
     created() {
       let vm = this;
-      vm.setAnalytics();
+      vm.setDashboard();
     },
     methods: {
-      setAnalytics() {
+      setDashboard() {
         let vm = this;
         vm.$Progress.start();
-        vm.$store.dispatch('setAnalytics')
+        vm.$store.dispatch('setDashboard')
             .then(response => {
               vm.$Progress.finish();
-              vm.setDashboard();
+              vm.setDashboardData();
             })
             .catch(error => {
               vm.$Progress.fail();
             })
       },
-      setDashboard() {
+      setDashboardData() {
         let vm = this;
         if (vm.analytics.users) {
           vm.simpleCards[0].title = vm.analytics.users.totalUsers + ' Usuarios';
@@ -348,7 +394,15 @@
           vm.simpleCards[2].title = vm.analytics.sales.totalSales + ' Ventas';
           vm.simpleCards[2].subTitle = vm.analytics.sales.newSales + ' Nuevas en la última semana';
         }
-      }
+      },
+      sendNewComment(postID) {
+        let vm = this;
+        let authUserID = vm.$store.state.users.authenticatedUser.id;
+        let newComment = vm.newPostComment;
+
+        console.log("post id" + postID + "; user id" + authUserID + "; comment" + newComment);
+        vm.$Progress.start();
+      },
     }
   }
 </script>

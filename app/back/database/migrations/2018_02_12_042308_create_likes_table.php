@@ -17,7 +17,7 @@ class CreateLikesTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('post_id')->nullable();
-            $table->integer('comment_id')->nullable();
+            $table->integer('post_comment_id')->nullable();
             $table->timestamps();
         });
     }

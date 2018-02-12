@@ -9,6 +9,7 @@ use Tbappback\User;
 use Tbappback\Invoice;
 use Tbappback\Product;
 use Tbappback\Employee;
+use Tbappback\Post;
 
 class DashboardController extends Controller
 {
@@ -19,6 +20,8 @@ class DashboardController extends Controller
 
         $totalSales = count(Invoice::all());
         $newSalesWeek = count(Invoice::where('created_at', '>=', Carbon::now()->subWeek())->get());
+
+        $newPostsWeek = Post::where('created_at', '>=', Carbon::now()->subWeek())->with(['user','postComments.likes','postComments.user','likes'])->get();
 
         return response()
             ->json([
@@ -32,6 +35,9 @@ class DashboardController extends Controller
                         'newSales' => $newSalesWeek
                     ]
                 ],
+                'posts' => [
+                    'newPosts' => $newPostsWeek,
+                ]
             ]);
     }
 }

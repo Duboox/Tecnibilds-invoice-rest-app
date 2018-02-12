@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Like extends Model
 {
     protected $fillable = [
-        'post_id', 'comment_id', 'user_id'
+        'post_id', 'post_comment_id', 'user_id'
     ];
 
     public function posts()
@@ -15,7 +15,7 @@ class Like extends Model
         return $this->belongsTo(Post::class);
     }
 
-    public function comments()
+    public function PostComments()
     {
         return $this->belongsTo(PostComment::class);
     }

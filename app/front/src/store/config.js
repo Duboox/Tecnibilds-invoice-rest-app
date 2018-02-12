@@ -12,9 +12,9 @@ export default {
   registerMethod: 'post',
   registerRequest: '/api/register',
 
-  /* DASHBOARD ANALYTICS */
-  getAnalyticsMethod: 'get',
-  getAnalyticsRequest: '/api/dashboard',
+  /* DASHBOARD */
+  getDashboardMethod: 'get',
+  getDashboardRequest: '/api/dashboard',
 
   /* PRODUCTS */
   getProductMethod: 'get',
@@ -76,5 +76,9 @@ export default {
   saveMessagesRequest: '/api/message',
 
   deleteMessagesMethod: 'delete',
-  deleteMessagesRequest: '/api/message'
+  deleteMessagesRequest: '/api/message',
+
+  /* POSTS COMMENTS */
+  savePostCommentMethod: 'post',
+  postCommentsRequest: '/api/postComment',
 }

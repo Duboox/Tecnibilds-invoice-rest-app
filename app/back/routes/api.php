@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('provider', 'ProviderController');
     Route::resource('employee', 'EmployeeController');
     Route::resource('invoice', 'InvoiceController');
+    Route::resource('post', 'PostController');
 });
 
 // Testing Route Json   :: En http-> api/test

@@ -18,5 +18,10 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductTableSeeder::class);
         $this->call(InvoiceTableSeeder::class);
         $this->call(ChatMessageTableSeeder::class);
+
+        /* POSTS, COMMENTS, LIKES */
+        $this->call(PostTableSeeder::class);
+        $this->call(Post_CommentsTableSeeder::class);
+        $this->call(LikeTableSeeder::class);
     }
 }

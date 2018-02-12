@@ -20,11 +20,11 @@
                         </v-card-title>
                         <v-card-text>
                             <v-container fluid>
-                                <v-layout row justify-space-around>
-                                    <v-flex xs4>
+                                <v-layout row justify-space-around wrap>
+                                    <v-flex xs11 md4 lg4>
                                         <v-subheader>Nombre</v-subheader>
                                     </v-flex>
-                                    <v-flex xs4>
+                                    <v-flex xs11 md4 lg4>
                                         <v-text-field
                                                 name="name"
                                                 :value="user.name"
@@ -33,11 +33,11 @@
                                     </v-flex>
                                 </v-layout>
                                 <v-divider></v-divider>
-                                <v-layout row justify-space-around>
-                                    <v-flex xs4>
+                                <v-layout row justify-space-around wrap>
+                                    <v-flex xs11 md4 lg4>
                                         <v-subheader>Correo electrónico</v-subheader>
                                     </v-flex>
-                                    <v-flex xs4>
+                                    <v-flex xs11 md4 lg4>
                                         <v-text-field
                                                 name="name"
                                                 :value="user.email"

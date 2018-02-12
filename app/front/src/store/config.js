@@ -42,6 +42,32 @@ export default {
   deleteEmployeeMethod: 'delete',
   deleteEmployeeRequest: '/api/employee',
 
+  /* CUSTOMERS */
+  getCustomerMethod: 'get',
+  getCustomerRequest: '/api/customer',
+
+  saveEditCustomerMethod: 'put',
+  saveEditCustomerRequest: '/api/customer/',
+
+  saveCustomerMethod: 'post',
+  saveCustomerRequest: '/api/customer',
+
+  deleteCustomerMethod: 'delete',
+  deleteCustomerRequest: '/api/customer',
+
+  /* PROVIDERS */
+  getProviderMethod: 'get',
+  getProviderRequest: '/api/provider',
+
+  saveEditProviderMethod: 'put',
+  saveEditProviderRequest: '/api/provider/',
+
+  saveProviderMethod: 'post',
+  saveProviderRequest: '/api/provider',
+
+  deleteProviderMethod: 'delete',
+  deleteProviderRequest: '/api/provider',
+
   /* Chat Messages */
   getMessagesMethod: 'get',
   getMessagesRequest: '/api/message',

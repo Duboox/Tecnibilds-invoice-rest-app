@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use Faker\Factory; // Faker
-use Tbappback\Customer; // DB Model
+use Tbappback\Provider; // DB Model
 
-class CustomerTableSeeder extends Seeder
+class ProviderTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,10 +15,10 @@ class CustomerTableSeeder extends Seeder
     {
         $faker = Factory::create(); // Create a instance of the faker/factory
 
-        Customer::truncate(); // Deletes al rows in DB
+        Provider::truncate(); // Deletes al rows in DB
 
         foreach (range(1, 50) as $i) {
-            Customer::create([
+            Provider::create([
                 'name' => $faker->firstName,
                 'last_name' => $faker->lastName,
                 'address' => $faker->address,

@@ -67,9 +67,7 @@
     <body>
         <div class="flex-center position-ref full-height">
             <div class="content">
-                <div class="title m-b-md">
-                    This is Tecnibilds API, Please go to the app itself.
-                </div>
+                <div class="title m-b-md">Tecnibilds API</div>
 
                 <div class="links">
                     <a href="http://app.tecnibilds.com.ve">App</a>

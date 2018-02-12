@@ -78,6 +78,9 @@
                                 </v-card-actions>
                             </v-card>
                         </v-flex>
+                        <v-layout v-show="products.model.length === 0" row align-center align-content-center justify-center>
+                            <span class="headline">No hay nada aquí Todavía</span>
+                        </v-layout>
                     </v-layout>
                 </v-container>
             </v-card>

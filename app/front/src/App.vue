@@ -239,13 +239,15 @@
         items: [
           {icon: 'date_range', text: 'Inicio', to: '/dashboard'},
           {icon: 'shopping_cart', text: 'Ventas', to: '/sales'},
-          {icon: 'work', text: 'Clientes', to: '/clients'},
-          {icon: 'shopping_basket', text: 'Proveedores', to: '/providers'},
+          {icon: 'work', text: 'Clientes', to: '/customers'},
           {icon: 'content_copy', text: 'Productos', to: '/products'},
-          {icon: 'insert_chart', text: 'Analytics', to: '/analytics'},
-          {icon: 'supervisor_account', text: 'Usuarios', to: '/users'},
+          {icon: 'shopping_basket', text: 'Proveedores', to: '/providers'},
           {icon: 'perm_identity', text: 'Empleados', to: '/employees'},
+          {icon: 'supervisor_account', text: 'Usuarios', to: '/users'},
+          {icon: 'insert_chart', text: 'Analytics', to: '/analytics'},
           {icon: 'chat', text: 'Chat', to: '/chat'},
+          {icon: 'settings', text: 'Ajustes', to: '/settings'},
+          {icon: 'help', text: 'Ayuda', to: '/help'},
             /* {
              icon: 'keyboard_arrow_up',
              'icon-alt': 'keyboard_arrow_down',
@@ -268,8 +270,6 @@
              {text: 'Other contacts'}
              ]
              }, */
-          {icon: 'settings', text: 'Ajustes', to: '/settings'},
-          {icon: 'help', text: 'Ayuda', to: '/help'},
         ]
       }
     },

@@ -24,18 +24,18 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('dashboard', 'DashboardController');
     Route::resource('message', 'ChatMessageController');
     Route::resource('product', 'ProductController');
-    Route::resource('invoice', 'InvoiceController');
-    Route::resource('employee', 'EmployeeController');
     Route::resource('customer', 'CustomerController');
-
+    Route::resource('provider', 'ProviderController');
+    Route::resource('employee', 'EmployeeController');
+    Route::resource('invoice', 'InvoiceController');
 });
 
 // Testing Route Json   :: En http-> api/test
-Route::get('/test', function () {
+/* Route::get('/test', function () {
     return response()->json([
         'user' => [
             'first-name' => 'Joshua',
             'last-name' => 'Martinez'
         ]
     ]);
-});
+}); */

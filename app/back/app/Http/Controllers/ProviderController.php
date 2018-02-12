@@ -7,27 +7,28 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as Image;
 
-use Tbappback\Customer;
+use Tbappback\Provider;
 
-class CustomerController extends Controller
+
+class ProviderController extends Controller
 {
     public function index()
     {
-        $customer = Customer::all();
+        $providers = Provider::all();
         return response()
             ->json([
-                'model' => $customer
+                'model' => $providers
             ]);
     }
 
     public function show($id)
     {
-        $customer = Customer::findOrFail($id);
-        $customer->created_at->diffForHumans();
+        $provider = Provider::findOrFail($id);
+        $provider->created_at->diffForHumans();
 
         return response()
             ->json([
-                'model' => $customer
+                'model' => $provider
             ]);
     }
 
@@ -54,7 +55,7 @@ class CustomerController extends Controller
             $fileName = str_random().'.jpg';
 
             /* Usa el disco "employee_pictures" ubicado en "config/filesystems.php" */
-            Storage::disk('customer_pictures')->put($fileName, $pic);
+            Storage::disk('provider_pictures')->put($fileName, $pic);
 
             $requestData = $request->all();
             $requestData['picture'] = $fileName;
@@ -62,7 +63,7 @@ class CustomerController extends Controller
             $requestData['picture'] = "default.jpg";
         }
 
-        $customer = Customer::create($requestData);
+        $provider = Provider::create($requestData);
 
         return response()
             ->json([
@@ -85,10 +86,10 @@ class CustomerController extends Controller
             'address' => 'required',
         ]);
 
-        if(! Storage::disk('customer_pictures')->exists($request->picture)){
-            $customerPic = Customer::findOrFail($id)->picture;
-            if ($customerPic <> "default.jpg") {
-                Storage::disk('customer_pictures')->delete($customerPic);
+        if(! Storage::disk('provider_pictures')->exists($request->picture)){
+            $providerPic = Provider::findOrFail($id)->picture;
+            if ($providerPic <> "default.jpg") {
+                Storage::disk('provider_pictures')->delete($providerPic);
             }
             $explodedPic = explode(',', $request->picture);
             if (base64_decode($explodedPic[1], true)) {
@@ -98,7 +99,7 @@ class CustomerController extends Controller
                 })->encode('jpg', 75);
 
                 $fileName = str_random().'.jpg';
-                Storage::disk('customer_pictures')->put($fileName, $pic);
+                Storage::disk('provider_pictures')->put($fileName, $pic);
                 $requestData = $request->all();
                 $requestData['picture'] = $fileName;
             }
@@ -106,8 +107,8 @@ class CustomerController extends Controller
             $requestData = $request->all();
         }
 
-        $customer = Customer::findOrFail($id);
-        $customer->update($requestData);
+        $provider = Provider::findOrFail($id);
+        $provider->update($requestData);
 
         return response()
             ->json([
@@ -117,15 +118,12 @@ class CustomerController extends Controller
 
     public function destroy($id)
     {
-        $customer = Customer::findOrFail($id);
-        $customerPic = $customer->picture;
-        if ($customerPic <> "default.jpg") {
-            Storage::disk('customer_pictures')->delete($customerPic);
+        $provider = Provider::findOrFail($id);
+        $providerPic = $provider->picture;
+        if ($providerPic <> "default.jpg") {
+            Storage::disk('provider_pictures')->delete($providerPic);
         }
-
-        // TODo: delete customer's invoices first
-
-        $customer->delete();
+        $provider->delete();
 
         return response()
             ->json([

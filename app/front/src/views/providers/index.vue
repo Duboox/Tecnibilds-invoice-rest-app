@@ -1,9 +1,9 @@
-<style lang="scss">
-    .employee-card {
+<style lang="scss" scoped>
+    .provider-card {
         max-width: 200px;
     }
 
-    .employee-card-media {
+    .provider-card-media {
         max-width: 200px;
         max-height: 200px;
     }
@@ -18,7 +18,7 @@
                 <v-icon>more_vert</v-icon>
             </v-btn>
         </v-toolbar>
-        <!-- Personal Cards -->
+        <!-- Providers Cards -->
         <v-container>
            <v-card class="elevation-4">
                <v-card-title>
@@ -26,66 +26,66 @@
                        <v-text-field
                                append-icon="search"
                                v-model="search"
-                               label="Buscar Empleado"
+                               label="Buscar Proveedor"
                                single-line
                                hide-details
                        ></v-text-field>
                    </v-flex>
                    <v-spacer></v-spacer>
-                   <v-btn icon to="/employee/create">
+                   <v-btn icon to="/provider/create">
                        <v-icon>add</v-icon>
                    </v-btn>
                </v-card-title>
                <v-container fluid grid-list-xl>
                    <v-layout align-center wrap>
-                       <v-flex v-for="(employee,i) in filteredEmployees" :key="i">
-                           <v-card class="ma-3 employee-card">
-                               <v-card-media class="employee-card-media">
-                                   <img :src="ApiEmployeesPics + employee.picture" :alt="employee.name"/>
+                       <v-flex v-for="(provider,i) in filteredProviders" :key="i">
+                           <v-card class="ma-3 provider-card">
+                               <v-card-media class="provider-card-media">
+                                   <img :src="ApiProvidersPics + provider.picture" :alt="provider.name"/>
                                </v-card-media>
                                <v-card-title primary-title>
                                    <v-layout column align-content-center justify-center align-center>
-                                       <h3 class="subheading mb-0">{{ employee.name + ' ' + employee.last_name}}</h3>
-                                       <div class="caption grey--text">{{ employee.email }}</div>
+                                       <h3 class="subheading mb-0">{{ provider.name + ' ' + provider.last_name}}</h3>
+                                       <div class="caption grey--text">{{ provider.email }}</div>
                                    </v-layout>
                                </v-card-title>
                                <v-card-actions class="white">
-                                   <div class="caption grey--text">{{ employee.position }}</div>
+                                   <div class="caption grey--text">{{ provider.company }}</div>
                                    <v-spacer></v-spacer>
-                                   <v-btn icon flat color="primary" :to="'/employee/edit/' + employee.id">
+                                   <v-btn icon flat color="primary" :to="'/provider/edit/' + provider.id">
                                        <v-icon>edit</v-icon>
                                    </v-btn>
                                    <v-btn icon flat color="red"
-                                          @click.stop="employeeDialogDelete = true, selectedEmployee=(employee)">
+                                          @click.stop="providerDialogDelete = true, selectedProvider=(provider)">
                                        <v-icon>delete</v-icon>
                                    </v-btn>
                                </v-card-actions>
                            </v-card>
                        </v-flex>
-                       <v-layout v-show="employees.model.length === 0" row align-center align-content-center justify-center>
+                       <v-layout v-show="providers.model.length === 0" row align-center align-content-center justify-center>
                            <span class="headline">No hay nada aquí Todavía</span>
                        </v-layout>
                    </v-layout>
                </v-container>
            </v-card>
         </v-container>
-        <v-dialog v-if="selectedEmployee" v-model="employeeDialogDelete" max-width="500px">
+        <v-dialog v-if="selectedProvider" v-model="providerDialogDelete" max-width="500px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">Borrar Empleado</span>
+                    <span class="headline">Borrar Proveedor</span>
                     <v-spacer></v-spacer>
-                    <v-btn icon @click.stop="employeeDialogDelete = !employeeDialogDelete">
+                    <v-btn icon @click.stop="providerDialogDelete = !providerDialogDelete">
                         <v-icon>close</v-icon>
                     </v-btn>
                 </v-card-title>
                 <v-card-text>
-                    <span>¿Estas seguro que deseas borrar el empleado <span class="body-2">{{ selectedEmployee.name + ' ' +  selectedEmployee.last_name}}</span>?</span>
+                    <span>¿Estas seguro que deseas borrar el Proveedor <span class="body-2">{{ selectedProvider.name + ' ' +  selectedProvider.last_name}}</span>?</span>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="primary"
                            flat
-                           v-on:click="removeEmployee(selectedEmployee), employeeDialogDelete = false">
+                           v-on:click="removeProvider(selectedProvider), providerDialogDelete = false">
                         Borrar
                     </v-btn>
                 </v-card-actions>
@@ -108,34 +108,34 @@
   export default {
     data () {
       return {
-        pageTitle: 'Empleados',
+        pageTitle: 'Proveedores',
         search: '',
-        ApiEmployeesPics: this.$configs.ApiUrl + 'images/employees/',
+        ApiProvidersPics: this.$configs.ApiUrl + 'images/providers/',
         snackBar: false,
-        selectedEmployee: null,
-        employeeDialogDelete: false,
+        selectedProvider: null,
+        providerDialogDelete: false,
         successMessage: '',
       }
     },
     computed: {
       ...mapGetters({
-        employees: 'getEmployees',
+        providers: 'getProviders',
       }),
-      filteredEmployees: function(){
-        return this.employees.model.filter((employee) => {
-          return employee.name.toLowerCase().match(this.search);
+      filteredProviders: function(){
+        return this.providers.model.filter((provider) => {
+          return provider.name.toLowerCase().match(this.search);
         }).reverse();
       }
     },
     created() {
       let vm = this;
-      vm.setEmployees();
+      vm.setProviders();
     },
     methods: {
-      setEmployees() {
+      setProviders() {
         let vm = this;
         vm.$Progress.start();
-        vm.$store.dispatch('setEmployees')
+        vm.$store.dispatch('setProviders')
             .then(response => {
               vm.$Progress.finish();
             })
@@ -143,12 +143,12 @@
               vm.$Progress.fail();
             })
       },
-      removeEmployee(employee) {
+      removeProvider(provider) {
         let vm = this;
         vm.$Progress.start();
-        vm.$store.dispatch('removeEmployee', employee)
+        vm.$store.dispatch('removeProvider', provider)
             .then(response => {
-              vm.successMessage = '¡Empleado Borrado Exitosamente!';
+              vm.successMessage = '¡Proveedor Borrado Exitosamente!';
               vm.snackBar = true;
               vm.$Progress.finish();
             })

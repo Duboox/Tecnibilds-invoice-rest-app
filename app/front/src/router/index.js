@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+Vue.use(Router)
+
+// The meta data for your routes
+const meta = require('./meta.json')
 
 /* VIEWS */
 import Login from '@/views/auth/Login'
@@ -11,15 +15,14 @@ import ProductsForm from '@/views/products/form'
 import Employees from '@/views/employees/index'
 import EmployeesForm from '@/views/employees/form'
 
-/* import Sales from '@/views/Sales' */
+import Customers from '@/views/customers/index'
+import CustomersForm from '@/views/customers/form'
+
+import Providers from '@/views/providers/index'
+import ProvidersForm from '@/views/providers/form'
 
 import Settings from '@/views/Settings'
 import Chat from '@/views/Chat'
-
-// The meta data for your routes
-const meta = require('./meta.json')
-
-Vue.use(Router)
 
 export default new Router({
   mode: '',
@@ -27,13 +30,25 @@ export default new Router({
     {path: '/', name: 'Login', component: Login, meta: meta['/']},
     {path: '/dashboard', name: 'Dashboard', component: Dashboard, meta: meta['/dashboard']},
 
+      /* PRODUCTS */
     {path: '/products', name: 'Products', component: Products, meta: meta['/products']},
     {path: '/product/create', name: 'ProductsCreate', component: ProductsForm, meta: meta['/product/create']},
     {path: '/product/edit/:id', name: 'ProductsEdit', component: ProductsForm, meta: meta['/product/edit/*']},
 
-    {path: '/employees', name: 'Employee', component: Employees, meta: meta['/employee']},
+      /* EMPLOYEES */
+    {path: '/employees', name: 'Employees', component: Employees, meta: meta['/employees']},
     {path: '/employee/create', name: 'EmployeeCreate', component: EmployeesForm, meta: meta['/employee/create']},
     {path: '/employee/edit/:id', name: 'EmployeeEdit', component: EmployeesForm, meta: meta['/employee/edit/*']},
+
+      /* CUSTOMERS */
+    {path: '/customers', name: 'Customers', component: Customers, meta: meta['/customers']},
+    {path: '/customer/create', name: 'CustomerCreate', component: CustomersForm, meta: meta['/customer/create']},
+    {path: '/customer/edit/:id', name: 'CustomerEdit', component: CustomersForm, meta: meta['/customer/edit/*']},
+
+      /* PROVIDERS */
+    {path: '/providers', name: 'Providers', component: Providers, meta: meta['/providers']},
+    {path: '/provider/create', name: 'ProviderCreate', component: ProvidersForm, meta: meta['/provider/create']},
+    {path: '/provider/edit/:id', name: 'ProviderEdit', component: ProvidersForm, meta: meta['/provider/edit/*']},
 
     /* {path: '/sales', name: 'Sales', component: Sales, meta: meta['/sales'] }, */
 

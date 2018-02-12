@@ -15,7 +15,7 @@
         </v-toolbar>
         <!-- Simple Cards -->
         <v-layout row justify-space-around class="mt-3" wrap>
-            <v-flex xs6 md4 lg4 v-for="(card, i) in simpleCards" :key="i">
+            <v-flex xs12 md4 lg4 v-for="(card, i) in simpleCards" :key="i">
                 <v-card class="ma-3">
                     <v-layout row>
                         <v-btn :color="card.color" fab dark>
@@ -34,8 +34,8 @@
             </v-flex>
         </v-layout>
         <!-- Charts Cards -->
-        <v-layout row justify-space-around class="mt-3" wrap>
-            <v-flex xs11 md4 lg4 v-for="(card, i) in chartCards" :key="i">
+        <v-layout row justify-space-around class="" wrap>
+            <v-flex xs12 md4 lg4 v-for="(card, i) in chartCards" :key="i">
                 <v-card class="ma-3">
                     <v-card-title>
                         <v-layout row>
@@ -76,7 +76,7 @@
         </v-layout>
         <!-- Post Card & CALENDAR ROW -->
         <v-layout row justify-space-around class="mt-3" wrap>
-            <v-flex xs11 md6 lg6>
+            <v-flex xs12 md6 lg6>
                 <v-card class="ma-3">
                     <v-toolbar color="cyan" dark>
                         <v-toolbar-title>Posts recientes</v-toolbar-title>
@@ -113,15 +113,14 @@
                 </v-card>
             </v-flex>
             <!-- Calendar -->
-            <v-flex xs11 md6 lg6>
+            <v-flex xs12 md6 lg6>
                 <v-date-picker
                         full-width
                         class="ma-3"
                         color="green lighten-1"
                         v-model="datePicker"
                         :first-day-of-week="1"
-                        locale="es-sp"
-                        landscape>
+                        locale="es-sp">
                 </v-date-picker>
             </v-flex>
         </v-layout>
@@ -142,7 +141,7 @@
             icon: 'account_circle',
             color: 'warning',
             title: '0 Usuarios',
-            subTitle: '0 Nuevos la ultima semana'
+            subTitle: '0 Nuevos en la última semana'
           },
           {
             icon: 'event',
@@ -153,8 +152,8 @@
           {
             icon: 'widgets',
             color: 'primary',
-            title: '755 Ventas',
-            subTitle: '3 Nuevas'
+            title: '0 Ventas',
+            subTitle: '0 Nuevas en la última semana'
           }
         ],
         chartCards: [
@@ -325,8 +324,6 @@
     created() {
       let vm = this;
       vm.setAnalytics();
-      vm.simpleCards[0].title = vm.analytics.users.totalUsers + ' Usuarios';
-      vm.simpleCards[0].subTitle = vm.analytics.users.newUsers + ' Nuevos la ultima semana';
     },
     methods: {
       setAnalytics() {
@@ -335,11 +332,23 @@
         vm.$store.dispatch('setAnalytics')
             .then(response => {
               vm.$Progress.finish();
+              vm.setDashboard();
             })
             .catch(error => {
               vm.$Progress.fail();
             })
       },
+      setDashboard() {
+        let vm = this;
+        if (vm.analytics.users) {
+          vm.simpleCards[0].title = vm.analytics.users.totalUsers + ' Usuarios';
+          vm.simpleCards[0].subTitle = vm.analytics.users.newUsers + ' Nuevos en la última semana';
+        }
+        if (vm.analytics.sales) {
+          vm.simpleCards[2].title = vm.analytics.sales.totalSales + ' Ventas';
+          vm.simpleCards[2].subTitle = vm.analytics.sales.newSales + ' Nuevas en la última semana';
+        }
+      }
     }
   }
 </script>

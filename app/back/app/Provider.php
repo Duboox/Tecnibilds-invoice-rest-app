@@ -4,7 +4,7 @@ namespace Tbappback;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class Provider extends Model
 {
     protected $fillable = [
         'name', 'last_name', 'picture', 'company', 'address', 'phone', 'gender', 'email'
@@ -22,10 +22,5 @@ class Customer extends Model
             'gender' => '',
             'email' => '',
         ];
-    }
-
-    public function invoices()
-    {
-        return $this->hasMany(Invoice::class);
     }
 }

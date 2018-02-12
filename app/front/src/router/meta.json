@@ -49,6 +49,44 @@
     "description": "Empresa de desarrollo websssss",
     "keywords": "Web, diseño, seo, development, design"
   },
+  "/customers": {
+    "forAuth": true,
+    "title": "Tecnibilds - Clientes",
+    "description": "Empresa de desarrollo web",
+    "keywords": "Web, diseño, seo, development, design"
+  },
+  "/customer/create": {
+    "forAuth": true,
+    "title": "Tecnibilds - Clientes - Crear",
+    "description": "Empresa de desarrollo web",
+    "keywords": "Web, diseño, seo, development, design"
+  },
+  "/customer/edit/*": {
+    "forAuth": true,
+    "mode": "edit",
+    "title": "Tecnibilds - Clientes - Editar",
+    "description": "Empresa de desarrollo websssss",
+    "keywords": "Web, diseño, seo, development, design"
+  },
+  "/providers": {
+    "forAuth": true,
+    "title": "Tecnibilds - Proveedores",
+    "description": "Empresa de desarrollo web",
+    "keywords": "Web, diseño, seo, development, design"
+  },
+  "/provider/create": {
+    "forAuth": true,
+    "title": "Tecnibilds - Proveedores - Crear",
+    "description": "Empresa de desarrollo web",
+    "keywords": "Web, diseño, seo, development, design"
+  },
+  "/provider/edit/*": {
+    "forAuth": true,
+    "mode": "edit",
+    "title": "Tecnibilds - Proveedores - Editar",
+    "description": "Empresa de desarrollo websssss",
+    "keywords": "Web, diseño, seo, development, design"
+  },
   "/sales": {
     "forAuth": true,
     "title": "Tecnibilds - Ventas",

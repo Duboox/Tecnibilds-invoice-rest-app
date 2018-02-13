@@ -16,7 +16,11 @@ export default {
       state.dashboard = analytics
     },
     SET_NEW_COMMENT(state, comment){
-      state.posts.newPosts.filter(comment.post_id).post_comments.push(comment);
+      state.dashboard.posts.newPosts.filter(function(post){
+        if(post.id === comment.post_id){
+          post.post_comments.push(comment)
+        }
+      });
     },
   },
 
@@ -39,8 +43,8 @@ export default {
         axios[config.savePostCommentMethod](config.apiUrl + config.postCommentsRequest, comment, {headers: getters.getHeader})
             .then(function (response) {
               if (response.data.saved) {
-                resolve(response)
                 commit('SET_NEW_COMMENT', comment);
+                resolve(response);
               }
             })
             .catch(error => {

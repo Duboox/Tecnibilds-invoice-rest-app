@@ -12,6 +12,12 @@ export default {
   registerMethod: 'post',
   registerRequest: '/api/register',
 
+  getAllUsersMethod: 'get',
+  getAllUsersRequest: '/api/users',
+
+  saveUserMethod: 'put',
+  saveUserRequest: '/api/users/',
+
   /* DASHBOARD */
   getDashboardMethod: 'get',
   getDashboardRequest: '/api/dashboard',

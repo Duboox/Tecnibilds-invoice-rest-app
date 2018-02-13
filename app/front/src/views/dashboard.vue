@@ -86,7 +86,7 @@
                     <v-toolbar color="cyan" dark>
                         <v-toolbar-title>Posts recientes</v-toolbar-title>
                         <v-spacer></v-spacer>
-                        <v-btn icon>
+                        <v-btn icon v-on:click="setDashboard()">
                             <v-icon>refresh</v-icon>
                         </v-btn>
                         <v-menu bottom left>
@@ -177,6 +177,9 @@
                                     </v-flex>
                                 </v-layout>
                             </v-card>
+                            <v-layout v-show="posts.newPosts.length === 0" row align-center align-content-center justify-center>
+                                <span class="headline">No hay nada aquí Todavía</span>
+                            </v-layout>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                 </v-card>
@@ -407,23 +410,25 @@
       },
       sendNewComment(postID) {
         let vm = this;
+        vm.$Progress.start();
+
         let authUserID = vm.$store.state.users.authenticatedUser.id;
         let newComment = vm.newPostComment;
+        let created_at = new Date(Date.now()).toLocaleString();
+        let user =  vm.$store.state.users.authenticatedUser;
         let comment = {
           'post_id': postID,
           'user_id': authUserID,
           'content': newComment,
+          'created_at': created_at,
+          'user': user
         };
-        vm.posts.newPosts.filter(function(post){
-          if(post.id == comment.post_id){
-            post.post_comments.push(comment)
-          }
-        });
         vm.$store.dispatch('sendPostComment', comment)
             .then(response => {
               vm.$Progress.finish();
-              vm.successMessage = '¡Producto creado exitosamente!'
+              vm.successMessage = '¡Comentario creado exitosamente!';
               vm.snackBar = true;
+              vm.newPostComment = '';
             })
             .catch(error => {
               vm.$Progress.fail();

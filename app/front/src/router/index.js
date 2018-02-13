@@ -9,6 +9,9 @@ const meta = require('./meta.json')
 import Login from '@/views/auth/Login'
 import Dashboard from '@/views/Dashboard'
 
+import Invoices from '@/views/invoices/index'
+/* import ProductsForm from '@/views/products/form' */
+
 import Products from '@/views/products/index'
 import ProductsForm from '@/views/products/form'
 
@@ -20,6 +23,8 @@ import CustomersForm from '@/views/customers/form'
 
 import Providers from '@/views/providers/index'
 import ProvidersForm from '@/views/providers/form'
+
+import Users from '@/views/users/index'
 
 import Settings from '@/views/Settings'
 import Chat from '@/views/Chat'
@@ -50,7 +55,11 @@ export default new Router({
     {path: '/provider/create', name: 'ProviderCreate', component: ProvidersForm, meta: meta['/provider/create']},
     {path: '/provider/edit/:id', name: 'ProviderEdit', component: ProvidersForm, meta: meta['/provider/edit/*']},
 
-    /* {path: '/sales', name: 'Sales', component: Sales, meta: meta['/sales'] }, */
+      /* INVOICES */
+    {path: '/sales', name: 'Sales', component: Invoices, meta: meta['/sales']},
+
+      /* USERS */
+    {path: '/users', name: 'Users', component: Users, meta: meta['/users']},
 
     {path: '/settings', name: 'Settings', component: Settings, meta: meta['/settings']},
     {path: '/chat', name: 'Chat', component: Chat, meta: meta['/chat']},

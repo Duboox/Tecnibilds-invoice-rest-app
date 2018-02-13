@@ -17,6 +17,7 @@ export default {
       created_at: null,
       updated_at: null,
     },
+    allUsers: []
   },
 
   mutations: {
@@ -38,6 +39,9 @@ export default {
     },
     SET_AUTH_USER(state, authUser){
       state.authenticatedUser = authUser
+    },
+    SET_ALL_USERS(state, users){
+      state.allUsers = users
     },
   },
 
@@ -110,6 +114,32 @@ export default {
 
       })
     },
+    saveUpdatedUserData({getters}, userData){
+      return new Promise((resolve, reject) => {
+        axios[config.saveUserMethod](config.apiUrl + config.saveUserRequest + userData.id, userData, {headers: getters.getHeader})
+            .then(function (response) {
+              if (response.data.saved) {
+                resolve(response)
+              }
+            })
+            .catch(error => {
+              reject(error);
+            })
+      })
+    },
+    setAllUsers({commit, getters}) {
+      return new Promise((resolve, reject) => {
+        axios[config.getAllUsersMethod](config.apiUrl + config.getAllUsersRequest, {headers: getters.getHeader})
+            .then(response => {
+              let users = response.data;
+              commit('SET_ALL_USERS', users);
+              resolve(response)
+            })
+            .catch(error => {
+              reject(error)
+            })
+      })
+    },
   },
 
   getters: {
@@ -143,6 +173,9 @@ export default {
     },
     getAuthenticatedUser(state) {
       return state.authenticatedUser
+    },
+    getAllUsers(state) {
+      return state.allUsers
     },
   },
 }

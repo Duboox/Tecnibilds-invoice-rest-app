@@ -16,7 +16,7 @@ export default {
       state.dashboard = analytics
     },
     SET_NEW_COMMENT(state, comment){
-      state.posts.newPosts = customers
+      state.posts.newPosts.filter(comment.post_id).post_comments.push(comment);
     },
   },
 
@@ -40,6 +40,7 @@ export default {
             .then(function (response) {
               if (response.data.saved) {
                 resolve(response)
+                commit('SET_NEW_COMMENT', comment);
               }
             })
             .catch(error => {

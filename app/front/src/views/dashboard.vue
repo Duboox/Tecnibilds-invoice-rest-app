@@ -193,6 +193,14 @@
                 </v-date-picker>
             </v-flex>
         </v-layout>
+        <v-snackbar
+                :timeout="3000"
+                bottom
+                v-model="snackBar"
+        >
+            {{ successMessage }}
+            <v-btn flat color="pink" @click.native="snackBar = false">Close</v-btn>
+        </v-snackbar>
     </v-layout>
 </template>
 
@@ -208,6 +216,8 @@
         search: '',
         ApiUsersPics: this.$configs.ApiUrl + 'images/users/',
         newPostComment: '',
+        snackBar: false,
+        successMessage: '',
         simpleCards: [
           {
             icon: 'account_circle',
@@ -399,9 +409,25 @@
         let vm = this;
         let authUserID = vm.$store.state.users.authenticatedUser.id;
         let newComment = vm.newPostComment;
-
-        console.log("post id" + postID + "; user id" + authUserID + "; comment" + newComment);
-        vm.$Progress.start();
+        let comment = {
+          'post_id': postID,
+          'user_id': authUserID,
+          'content': newComment,
+        };
+        vm.posts.newPosts.filter(function(post){
+          if(post.id == comment.post_id){
+            post.post_comments.push(comment)
+          }
+        });
+        vm.$store.dispatch('sendPostComment', comment)
+            .then(response => {
+              vm.$Progress.finish();
+              vm.successMessage = '¡Producto creado exitosamente!'
+              vm.snackBar = true;
+            })
+            .catch(error => {
+              vm.$Progress.fail();
+            })
       },
     }
   }

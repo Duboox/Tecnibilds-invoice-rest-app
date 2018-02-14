@@ -95,7 +95,7 @@
                             </v-btn>
                             <v-list>
                                 <v-list-tile>
-                                    <v-list-tile-title>asd</v-list-tile-title>
+                                    <v-list-tile-title>Crear Nuevo Post</v-list-tile-title>
                                 </v-list-tile>
                             </v-list>
                         </v-menu>

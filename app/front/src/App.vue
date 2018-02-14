@@ -35,7 +35,7 @@
                     <v-divider></v-divider>
                     <template v-for="(item, i) in items">
                         <v-layout
-                               :key="i"
+                                :key="i"
                                 row
                                 v-if="item.heading"
                                 align-center
@@ -115,12 +115,46 @@
                     <v-btn icon>
                         <v-icon>apps</v-icon>
                     </v-btn>
-                    <v-btn icon>
-                        <v-badge overlay color="purple" overlap v-model="notif.badge">
-                            <span slot="badge">{{ notif.number }}</span>
-                            <v-icon>notifications</v-icon>
-                        </v-badge>
-                    </v-btn>
+                    <v-menu
+                            offset-x
+                            offset-y
+                            :close-on-content-click="false"
+                            :nudge-width="200"
+                    >
+                        <v-btn icon slot="activator">
+                            <v-badge overlay color="purple" overlap>
+                                <span slot="badge" v-if="notifications">{{ notifications.length }}</span>
+                                <v-icon>notifications</v-icon>
+                            </v-badge>
+                        </v-btn>
+                        <v-card>
+                            <v-list>
+                                <v-list-tile avatar v-for="(notification,i) in notifications" :key="i">
+                                    <v-list-tile-avatar>
+                                        <img v-if="user.picture"
+                                             :src="ApiUsersPics + notification.data.userComm.picture" :alt="user.name">
+                                    </v-list-tile-avatar>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>
+                                            <span>{{ notification.data.userComm.name + notification.data.header }}</span>
+                                        </v-list-tile-title>
+                                        <v-list-tile-sub-title>
+                                            <span class="caption">{{ notification.data.post.content }}</span>
+                                        </v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                    <v-list-tile-action>
+                                        <v-btn icon to="/settings">
+                                            <v-icon>close</v-icon>
+                                        </v-btn>
+                                    </v-list-tile-action>
+                                </v-list-tile>
+                                <v-layout v-show="notifications.length == 0" row align-center align-content-center justify-center>
+                                    <span class="caption">¡No tienes notificaciones!</span>
+                                </v-layout>
+                            </v-list>
+                            <v-divider></v-divider>
+                        </v-card>
+                    </v-menu>
                     <!-- User Logged Menu -->
                     <v-menu
                             offset-x
@@ -232,10 +266,6 @@
         drawer: null,
         mini: true,
         datePicker: null,
-        notif: {
-          badge: true,
-          number: '4',
-        },
         items: [
           {icon: 'date_range', text: 'Inicio', to: '/dashboard'},
           {icon: 'shopping_cart', text: 'Ventas', to: '/sales'},
@@ -275,15 +305,17 @@
     },
     created() {
       if (this.isAuthenticated) {
-        if(this.checkToken()) {
+        if (this.checkToken()) {
           this.setAuthenticatedUser();
         }
       }
+        /* {{ JSON.parse(notification.data).post.content }} */
     },
     computed: {
       ...mapGetters({
         isAuthenticated: 'isAuthenticated',
         user: 'getAuthenticatedUser',
+        notifications: 'getNotifications',
       }),
     },
     methods: {

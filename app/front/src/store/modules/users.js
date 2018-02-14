@@ -17,6 +17,7 @@ export default {
       created_at: null,
       updated_at: null,
     },
+    notifications: [],
     allUsers: []
   },
 
@@ -39,6 +40,9 @@ export default {
     },
     SET_AUTH_USER(state, authUser){
       state.authenticatedUser = authUser
+    },
+    SET_NOTIFICATIONS(state, notifications){
+      state.notifications = notifications
     },
     SET_ALL_USERS(state, users){
       state.allUsers = users
@@ -83,18 +87,32 @@ export default {
         return true
       }
     },
-    setAuthenticatedUser({commit, getters}) {
+    setAuthenticatedUser({commit, getters, dispatch}) {
         return new Promise((resolve, reject) => {
           axios[config.getUserMethod](config.apiUrl + config.getUserRequest, {headers: getters.getHeader})
               .then(response => {
                 let authUser = response.data;
                 commit('SET_AUTH_USER', authUser);
+                dispatch('setUserNotifications', authUser.id);
                 resolve(response)
               })
               .catch(error => {
                 reject(error)
               })
         });
+    },
+    setUserNotifications({commit, getters}, userID) {
+      return new Promise((resolve, reject) => {
+        axios[config.getUserNotificationsMethod](config.apiUrl + config.getUserNotificationsRequest + '/' + userID, {headers: getters.getHeader})
+            .then(response => {
+              let notifications = response.data;
+              commit('SET_NOTIFICATIONS', notifications);
+              resolve(response)
+            })
+            .catch(error => {
+              reject(error)
+            })
+      })
     },
     logout({commit}) {
       let redirect = '/';
@@ -114,12 +132,17 @@ export default {
 
       })
     },
-    saveUpdatedUserData({getters}, userData){
+    saveUpdatedUserData({getters, commit}, userData){
       return new Promise((resolve, reject) => {
         axios[config.saveUserMethod](config.apiUrl + config.saveUserRequest + userData.id, userData, {headers: getters.getHeader})
             .then(function (response) {
-              if (response.data.saved) {
-                resolve(response)
+              let saved = response.data.saved;
+              let updatedUserData = response.data.updatedUserData;
+              if (saved) {
+                if (updatedUserData) {
+                  commit('SET_AUTH_USER', updatedUserData);
+                  resolve(response)
+                }
               }
             })
             .catch(error => {
@@ -173,6 +196,9 @@ export default {
     },
     getAuthenticatedUser(state) {
       return state.authenticatedUser
+    },
+    getNotifications(state) {
+      return state.notifications.notifications
     },
     getAllUsers(state) {
       return state.allUsers

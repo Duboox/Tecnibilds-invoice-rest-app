@@ -62,6 +62,7 @@
                                         ></v-text-field>
                                     </v-flex>
                                 </v-layout>
+                                <v-divider></v-divider>
                                 <v-layout row justify-space-around wrap>
                                     <v-flex xs11 md4 lg4>
                                         <v-subheader>Imagen de perfil</v-subheader>

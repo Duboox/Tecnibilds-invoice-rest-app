@@ -65,9 +65,11 @@ class UserController extends Controller
         $user = User::findOrFail($request->id);
         $user->update($requestData);
 
+        $userUpdated = User::findOrFail($request->id);
         return response()
             ->json([
-                'saved' => true
+                'saved' => true,
+                'updatedUserData' => $userUpdated
             ]);
     }
 }

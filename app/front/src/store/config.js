@@ -15,6 +15,9 @@ export default {
   getAllUsersMethod: 'get',
   getAllUsersRequest: '/api/users',
 
+  getUserNotificationsMethod: 'get',
+  getUserNotificationsRequest: '/api/notification',
+
   saveUserMethod: 'put',
   saveUserRequest: '/api/users/',
 

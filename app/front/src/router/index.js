@@ -10,7 +10,8 @@ import Login from '@/views/auth/Login'
 import Dashboard from '@/views/Dashboard'
 
 import Invoices from '@/views/invoices/index'
-/* import ProductsForm from '@/views/products/form' */
+import InvoicesShow from '@/views/invoices/show'
+import InvoicesForm from '@/views/invoices/form'
 
 import Products from '@/views/products/index'
 import ProductsForm from '@/views/products/form'
@@ -56,7 +57,10 @@ export default new Router({
     {path: '/provider/edit/:id', name: 'ProviderEdit', component: ProvidersForm, meta: meta['/provider/edit/*']},
 
       /* INVOICES */
-    {path: '/sales', name: 'Sales', component: Invoices, meta: meta['/sales']},
+    {path: '/invoices', name: 'Invoices', component: Invoices, meta: meta['/invoices']},
+    {path: '/invoice/show/:id', name: 'InvoiceShow', component: InvoicesShow, meta: meta['/invoice/show/']},
+    {path: '/invoice/create', name: 'InvoiceCreate', component: InvoicesForm, meta: meta['/invoice/create']},
+    {path: '/invoice/edit/:id', name: 'InvoiceEdit', component: InvoicesForm, meta: meta['/invoice/edit/*']},
 
       /* USERS */
     {path: '/users', name: 'Users', component: Users, meta: meta['/users']},

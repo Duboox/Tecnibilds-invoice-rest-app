@@ -148,7 +148,7 @@
                                         </v-btn>
                                     </v-list-tile-action>
                                 </v-list-tile>
-                                <v-layout v-show="notifications.length == 0" row align-center align-content-center justify-center>
+                                <v-layout v-if="! notifications" row align-center align-content-center justify-center>
                                     <span class="caption">¡No tienes notificaciones!</span>
                                 </v-layout>
                             </v-list>
@@ -268,7 +268,7 @@
         datePicker: null,
         items: [
           {icon: 'date_range', text: 'Inicio', to: '/dashboard'},
-          {icon: 'shopping_cart', text: 'Ventas', to: '/sales'},
+          {icon: 'shopping_cart', text: 'Facturas', to: '/invoices'},
           {icon: 'work', text: 'Clientes', to: '/customers'},
           {icon: 'content_copy', text: 'Productos', to: '/products'},
           {icon: 'shopping_basket', text: 'Proveedores', to: '/providers'},

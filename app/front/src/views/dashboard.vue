@@ -177,7 +177,8 @@
                                     </v-flex>
                                 </v-layout>
                             </v-card>
-                            <v-layout v-show="posts.newPosts.length === 0" row align-center align-content-center justify-center>
+                            <v-layout v-show="posts.newPosts.length === 0" row align-center align-content-center
+                                      justify-center>
                                 <span class="headline">No hay nada aquí Todavía</span>
                             </v-layout>
                         </v-expansion-panel-content>
@@ -415,7 +416,7 @@
         let authUserID = vm.$store.state.users.authenticatedUser.id;
         let newComment = vm.newPostComment;
         let created_at = new Date(Date.now()).toLocaleString();
-        let user =  vm.$store.state.users.authenticatedUser;
+        let user = vm.$store.state.users.authenticatedUser;
         let comment = {
           'post_id': postID,
           'user_id': authUserID,

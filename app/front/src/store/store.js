@@ -15,6 +15,7 @@ import Products from './modules/products'
 import Employees from './modules/employees'
 import Customers from './modules/customers'
 import Providers from './modules/providers'
+import Invoices from './modules/invoices'
 import Chats from './modules/chats'
 
 /* MODULES */
@@ -25,6 +26,7 @@ const ModuleEmployees = Employees;
 const ModuleCustomers = Customers;
 const ModuleProviders = Providers;
 const ModuleChats = Chats;
+const ModuleInvoices = Invoices;
 
 export const store = new Vuex.Store({
   modules: {
@@ -34,6 +36,7 @@ export const store = new Vuex.Store({
     employees: ModuleEmployees,
     customers: ModuleCustomers,
     providers: ModuleProviders,
+    invoices: ModuleInvoices,
     chats: ModuleChats,
   },
   plugins: [

@@ -77,6 +77,19 @@ export default {
   deleteProviderMethod: 'delete',
   deleteProviderRequest: '/api/provider',
 
+  /* INVOICES */
+  getInvoiceMethod: 'get',
+  getInvoiceRequest: '/api/invoice',
+
+  saveEditInvoiceMethod: 'put',
+  saveEditInvoiceRequest: '/api/invoice/',
+
+  saveInvoiceMethod: 'post',
+  saveInvoiceRequest: '/api/invoice',
+
+  deleteInvoiceMethod: 'delete',
+  deleteInvoiceRequest: '/api/invoice',
+
   /* Chat Messages */
   getMessagesMethod: 'get',
   getMessagesRequest: '/api/message',

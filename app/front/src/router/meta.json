@@ -87,20 +87,27 @@
     "description": "Empresa de desarrollo websssss",
     "keywords": "Web, diseño, seo, development, design"
   },
-  "/sales": {
+  "/invoices": {
     "forAuth": true,
     "title": "Tecnibilds - Ventas",
     "description": "Empresa de desarrollo web",
     "keywords": "Web, diseño, seo, development, design"
   },
-  "/sales/create": {
+  "/invoice/create": {
     "forAuth": true,
     "title": "Tecnibilds - Ventas - Crear",
     "description": "Empresa de desarrollo web",
     "keywords": "Web, diseño, seo, development, design"
   },
-  "/sales/edit/*": {
+  "/invoice/show/": {
     "forAuth": true,
+    "title": "Tecnibilds - Venta - Mostrar",
+    "description": "Empresa de desarrollo web",
+    "keywords": "Web, diseño, seo, development, design"
+  },
+  "/invoice/edit/*": {
+    "forAuth": true,
+    "mode": "edit",
     "title": "Tecnibilds - Ventas - Editar",
     "description": "Empresa de desarrollo web",
     "keywords": "Web, diseño, seo, development, design"

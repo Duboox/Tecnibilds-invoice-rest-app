@@ -48,7 +48,7 @@
                                 </v-flex>
                                 <v-flex xs6 md3 lg3>
                                     <v-layout column>
-                                        <span class="title">Cliente</span>
+                                        <span class="title">Empresa</span>
                                         <v-flex xs10>
                                             <v-select
                                                     :items="customers.model"
@@ -65,10 +65,10 @@
                                 </v-flex>
                                 <v-flex xs6 md3 lg3>
                                     <v-layout column>
-                                        <span class="title">Empresa</span>
+                                        <span class="title">Nombre Cliente</span>
                                         <v-flex xs10>
                                             <v-text-field
-                                                    v-model="invoice.model.customer.company"
+                                                    v-model="invoice.model.customer.name"
                                                     disabled
                                             ></v-text-field>
                                         </v-flex>

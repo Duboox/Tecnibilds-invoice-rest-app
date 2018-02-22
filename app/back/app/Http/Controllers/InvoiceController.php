@@ -121,7 +121,8 @@ class InvoiceController extends Controller
         $itemsIds = [];
 
         foreach ($request->items as $item) {
-            $data['sub_total'] += $item['unit_price'] * $item['qty'];
+            $ProductItem = Product::findOrFail($item['product_id']);
+            $data['sub_total'] +=  $ProductItem->unit_price * $item['qty'];
             if(isset($item['id'])) {
                 // Update the item
                 InvoiceItem::whereId($item['id'])

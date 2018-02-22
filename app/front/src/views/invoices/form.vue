@@ -253,7 +253,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn v-if="mode === 'edit'" color="primary" v-on:click="saveEditedInvoice()" flat>Guardar</v-btn>
-                    <v-btn v-else color="primary" v-on:click="saveEditedInvoice()" flat>Crear</v-btn>
+                    <v-btn v-else color="primary" v-on:click="saveCreatedInvoice()" flat>Crear</v-btn>
                 </v-card-actions>
             </v-card>
         </v-card>
@@ -354,6 +354,7 @@
           }
         vm.invoice.model.items.push(item);
       },
+      /* PRODUCTS FOR INVOICE */
       setProducts() {
         let vm = this;
         vm.$Progress.start();
@@ -379,13 +380,15 @@
         let vm = this;
         vm.$Progress.start();
         let invoice = vm.invoice.model;
-        vm.$store.dispatch('saveEditEmployee', invoice)
+        console.log("invoice", invoice);
+        vm.$store.dispatch('saveEditInvoice', invoice)
             .then(response => {
               vm.$Progress.finish();
               vm.successMessage = '¡Factura editada exitosamente!'
               vm.snackBar = true;
             })
             .catch(error => {
+              console.log(error);
               vm.$Progress.fail();
             })
       },
@@ -393,6 +396,8 @@
         let vm = this;
         vm.$Progress.start();
         let invoice = vm.invoice.model;
+        invoice.customer_id = invoice.customer.id;
+        console.log("invoice", invoice);
         vm.$store.dispatch('saveInvoice', invoice)
             .then(response => {
               vm.$Progress.finish();

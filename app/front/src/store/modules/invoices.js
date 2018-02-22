@@ -78,7 +78,7 @@ export default {
     },
     saveEditInvoice({getters}, invoice) {
       return new Promise((resolve, reject) => {
-        axios[config.saveEditInvoiceMethod](config.apiUrl + config.saveEditInvoiceRequest + invoice.model.id, invoice.model, {headers: getters.getHeader})
+        axios[config.saveEditInvoiceMethod](config.apiUrl + config.saveEditInvoiceRequest + invoice.id, invoice, {headers: getters.getHeader})
             .then(function (response) {
               if (response.data.saved) {
                 resolve(response)
@@ -91,7 +91,7 @@ export default {
     },
     saveInvoice({getters}, invoice) {
       return new Promise((resolve, reject) => {
-        axios[config.saveInvoiceMethod](config.apiUrl + config.saveInvoiceRequest, invoice.model, {headers: getters.getHeader})
+        axios[config.saveInvoiceMethod](config.apiUrl + config.saveInvoiceRequest, invoice, {headers: getters.getHeader})
             .then(function (response) {
               if (response.data.saved) {
                 resolve(response)

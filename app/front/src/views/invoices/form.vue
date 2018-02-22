@@ -252,10 +252,19 @@
                 </v-container>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn flat dark color="primary">Guardar</v-btn>
+                    <v-btn v-if="mode === 'edit'" color="primary" v-on:click="saveEditedInvoice()" flat>Guardar</v-btn>
+                    <v-btn v-else color="primary" v-on:click="saveEditedInvoice()" flat>Crear</v-btn>
                 </v-card-actions>
             </v-card>
         </v-card>
+        <v-snackbar
+                :timeout="3000"
+                bottom
+                v-model="snackBar"
+        >
+            {{ successMessage }}
+            <v-btn flat color="pink" @click.native="snackBar = false">Close</v-btn>
+        </v-snackbar>
     </v-layout>
 </template>
 
@@ -272,6 +281,8 @@
         menuDate: false,
         menuDue_date: false,
         newInvoiceItem: {},
+        mode: this.$route.meta.mode,
+        snackBar: false,
         headers: [
           {text: 'COD', value: 'cod', sortable: false},
           {text: 'Nombre de producto', value: 'name', sortable: false},
@@ -334,6 +345,15 @@
               vm.$Progress.fail();
             })
       },
+      addItem(){
+        let vm = this;
+          let item = {
+            invoice_id: 0,
+            product_id: 1,
+            qty: 1,
+          }
+        vm.invoice.model.items.push(item);
+      },
       setProducts() {
         let vm = this;
         vm.$Progress.start();
@@ -351,19 +371,38 @@
               vm.$Progress.fail();
             })
       },
-      addItem(){
-        let vm = this;
-          let item = {
-            invoice_id: 0,
-            product_id: 1,
-            qty: 1,
-          }
-        vm.invoice.model.items.push(item);
-      },
       removeItem(item) {
         let invoiceItems = this.invoice.model.items;
         invoiceItems.splice(invoiceItems.indexOf(item), 1)
-      }
+      },
+      saveEditedInvoice() {
+        let vm = this;
+        vm.$Progress.start();
+        let invoice = vm.invoice.model;
+        vm.$store.dispatch('saveEditEmployee', invoice)
+            .then(response => {
+              vm.$Progress.finish();
+              vm.successMessage = '¡Factura editada exitosamente!'
+              vm.snackBar = true;
+            })
+            .catch(error => {
+              vm.$Progress.fail();
+            })
+      },
+      saveCreatedInvoice() {
+        let vm = this;
+        vm.$Progress.start();
+        let invoice = vm.invoice.model;
+        vm.$store.dispatch('saveInvoice', invoice)
+            .then(response => {
+              vm.$Progress.finish();
+              vm.successMessage = '¡Factura creada exitosamente!'
+              vm.snackBar = true;
+            })
+            .catch(error => {
+              vm.$Progress.fail();
+            })
+      },
     }
   }
 </script>

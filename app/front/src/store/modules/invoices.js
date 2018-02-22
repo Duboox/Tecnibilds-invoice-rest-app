@@ -43,9 +43,9 @@ export default {
         }
       }
     },
-    REMOVE_PRODUCT(state, product){
-      let products = state.products.model;
-      products.splice(products.indexOf(product), 1)
+    REMOVE_INVOICE(state, invoice){
+      let invoices = state.invoices.model;
+      invoices.splice(invoices.indexOf(invoice), 1)
     },
   },
 
@@ -76,9 +76,9 @@ export default {
             })
       })
     },
-    saveEditProduct({getters}, product) {
+    saveEditInvoice({getters}, invoice) {
       return new Promise((resolve, reject) => {
-        axios[config.saveEditProductMethod](config.apiUrl + config.saveEditProductRequest + product.model.id, product.model, {headers: getters.getHeader})
+        axios[config.saveEditInvoiceMethod](config.apiUrl + config.saveEditInvoiceRequest + invoice.model.id, invoice.model, {headers: getters.getHeader})
             .then(function (response) {
               if (response.data.saved) {
                 resolve(response)
@@ -89,9 +89,9 @@ export default {
             })
       })
     },
-    saveProduct({getters}, product) {
+    saveInvoice({getters}, invoice) {
       return new Promise((resolve, reject) => {
-        axios[config.saveProductMethod](config.apiUrl + config.saveProductRequest, product.model, {headers: getters.getHeader})
+        axios[config.saveInvoiceMethod](config.apiUrl + config.saveInvoiceRequest, invoice.model, {headers: getters.getHeader})
             .then(function (response) {
               if (response.data.saved) {
                 resolve(response)
@@ -105,12 +105,12 @@ export default {
     removeSelectedInvoice(state) {
       state.commit('REMOVE_SELECTED_INVOICE')
     },
-    removeProduct({getters, commit}, product) {
+    removeInvoice({getters, commit}, invoice) {
       return new Promise((resolve, reject) => {
-        axios[config.deleteProductMethod](config.apiUrl + config.deleteProductRequest + '/' + product.id, {headers: getters.getHeader})
+        axios[config.deleteInvoiceMethod](config.apiUrl + config.deleteInvoiceRequest + '/' + invoice.id, {headers: getters.getHeader})
             .then(function (response) {
               if (response.data.deleted) {
-                commit('REMOVE_PRODUCT', product);
+                commit('REMOVE_INVOICE', invoice);
                 resolve(response);
               }
               console.log(response)

@@ -25,7 +25,7 @@
                     <v-btn icon flat color="primary" :to="'/invoice/edit/' + invoice.model.id">
                         <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn icon flat color="red" @click="">
+                    <v-btn icon flat color="red" @click="removeInvoice(invoice.model)">
                         <v-icon>delete</v-icon>
                     </v-btn>
                 </v-card-title>
@@ -177,6 +177,19 @@
         vm.$Progress.start();
         vm.$store.dispatch('setInvoice', ID)
             .then(response => {
+              vm.$Progress.finish();
+            })
+            .catch(error => {
+              vm.$Progress.fail();
+            })
+      },
+      removeInvoice(invoice) {
+        let vm = this;
+        vm.$Progress.start();
+        vm.$store.dispatch('removeInvoice', invoice)
+            .then(response => {
+              vm.successMessage = '¡Factura Borrada Exitosamente!';
+              vm.snackBar = true;
               vm.$Progress.finish();
             })
             .catch(error => {

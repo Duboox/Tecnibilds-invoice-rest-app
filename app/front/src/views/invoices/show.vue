@@ -19,7 +19,7 @@
                         </v-btn>
                     </v-flex>
                     <v-spacer></v-spacer>
-                    <v-btn icon>
+                    <v-btn icon @click="generatePDF()">
                         <v-icon>print</v-icon>
                     </v-btn>
                     <v-btn icon flat color="primary" :to="'/invoice/edit/' + invoice.model.id">
@@ -143,6 +143,7 @@
 
 <script>
   import {mapGetters, mapActions} from 'vuex';
+  import JSPDF from 'jspdf';
 
   export default {
     data () {
@@ -196,6 +197,25 @@
               vm.$Progress.fail();
             })
       },
+      generatePDF(){
+        let vm = this;
+        let pdfName = vm.invoice.model.title + '__' + vm.invoice.model.created_at;
+        let doc = new JSPDF();
+        let invoiceItemsLength = vm.invoice.model.items.length;
+
+        doc.text(vm.invoice.model.title, 10, 10);
+        doc.text(vm.invoice.model.created_at,10,15);
+        for (let i = 0; i < invoiceItemsLength; i++) {
+          doc.text(vm.invoice.products[vm.invoice.model.items[i].product_id -1].name, 15, 30+(i * 10));
+        }
+        for (let i = 0; i < invoiceItemsLength; i++) {
+          doc.text(vm.invoice.products[vm.invoice.model.items[i].product_id -1].unit_price + " $", 150, 30+(i * 10));
+        }
+        doc.text("Sub total: " + vm.invoice.model.sub_total, 120, 100);
+        doc.text("Descuento: " + vm.invoice.model.discount, 120, 110);
+        doc.text("Total: " + vm.invoice.model.total, 120, 120);
+        doc.save(pdfName + '.pdf');
+      }
     }
   }
 </script>

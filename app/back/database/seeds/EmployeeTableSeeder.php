@@ -17,7 +17,7 @@ class EmployeeTableSeeder extends Seeder
 
         Employee::truncate(); // Deletes al rows in DB
 
-        foreach (range(1, 20) as $i) {
+        foreach (range(1, 4) as $i) {
             Employee::create([
                 'name' => $faker->firstName,
                 'last_name' => $faker->lastName,

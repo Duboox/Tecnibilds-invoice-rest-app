@@ -19,7 +19,7 @@ class PostTableSeeder extends Seeder
         Post::truncate(); // Deletes al rows in DB
 
         /* Create 1->25 Posts */
-        foreach (range(1, 25) as $i) {
+        foreach (range(1, 2) as $i) {
             Post::create([
                 'user_id' => User::all()->random()->id,
                 'content' => $faker->sentence

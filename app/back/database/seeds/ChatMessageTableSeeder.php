@@ -17,7 +17,7 @@ class ChatMessageTableSeeder extends Seeder
 
         ChatMessage::truncate(); // Deletes al rows in DB
 
-        foreach (range(1, 10) as $i) {
+        foreach (range(1, 2) as $i) {
             ChatMessage::create([
                 'user_id' => Tbappback\User::all()->random()->id,
                 'message' => $faker->sentence,

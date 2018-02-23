@@ -21,7 +21,7 @@ class Post_CommentsTableSeeder extends Seeder
         PostComment::truncate(); // Deletes al rows in DB
 
         /* Create 1->25 Posts */
-        foreach (range(1, 25) as $i) {
+        foreach (range(1, 3) as $i) {
             PostComment::create([
                 'post_id' => Post::all()->random()->id,
                 'user_id' => User::all()->random()->id,

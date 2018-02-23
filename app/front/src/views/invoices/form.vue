@@ -305,7 +305,7 @@
         if(vm.invoice.model.items.length > 0 && vm.products.model.length > 0) {
           return vm.invoice.model.items.reduce(function (carry, item) {
             if (item.product_id) {
-              return carry + parseFloat(item.qty) * parseFloat(vm.products.model[item.product_id - 1].unit_price)
+              return carry + parseFloat(item.qty) * parseFloat(vm.products.model[item.product_id -1].unit_price)
             }
           }, 0)
         }

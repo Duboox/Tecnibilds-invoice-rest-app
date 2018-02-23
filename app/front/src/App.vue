@@ -131,15 +131,20 @@
                             <v-list>
                                 <v-list-tile avatar v-for="(notification,i) in notifications" :key="i">
                                     <v-list-tile-avatar>
-                                        <img v-if="user.picture"
-                                             :src="ApiUsersPics + notification.data.userComm.picture" :alt="user.name">
+                                        <img v-if="notification.data.userComm"
+                                             :src="ApiUsersPics + notification.data.userComm.picture" :alt="notification.data.userComm.name">
+                                        <img v-if="notification.data.customer"
+                                             :src="ApiCustomersPics + notification.data.customer.picture" :alt="notification.data.customer.name">
                                     </v-list-tile-avatar>
                                     <v-list-tile-content>
                                         <v-list-tile-title>
-                                            <span>{{ notification.data.userComm.name + notification.data.header }}</span>
+                                            <span v-if="notification.data.userComm">{{ notification.data.userComm.name + notification.data.header }}</span>
+                                            <span v-if="notification.data.customer">{{ notification.data.header + '  ' + notification.data.customer.name + '  ' + notification.data.customer.last_name }}</span>
                                         </v-list-tile-title>
                                         <v-list-tile-sub-title>
-                                            <span class="caption">{{ notification.data.post.content }}</span>
+                                            <span class="caption" v-if="notification.data.post">{{ notification.data.post.content }}</span>
+                                            <span class="caption" v-if="notification.data.invoice">{{ notification.data.invoice.content }}</span>
+                                            <span class="caption" v-if="notification.data.customer">{{ notification.data.customer.company }}</span>
                                         </v-list-tile-sub-title>
                                     </v-list-tile-content>
                                     <v-list-tile-action>
@@ -258,6 +263,7 @@
         appLogo: this.$configs.appLogo,
         outRedirect: '/',
         ApiUsersPics: this.$configs.ApiUrl + 'images/users/',
+        ApiCustomersPics: this.$configs.ApiUrl + 'images/customers/',
 
         snackBar: false,
         snackText: '',

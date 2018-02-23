@@ -19,7 +19,7 @@ class UserTableSeeder extends Seeder
 
         /* Create 1->25 User's */
         static $password;
-        foreach (range(1, 15) as $i) {
+        foreach (range(1, 5) as $i) {
             User::create([
                 'name' => $faker->name,
                 'email' => $faker->unique()->safeEmail,

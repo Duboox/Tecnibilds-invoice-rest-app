@@ -117,8 +117,8 @@ export default {
     logout({commit}) {
       let redirect = '/';
 
-      commit('DESTROY_TOKENS');
       router.push(redirect);
+      commit('DESTROY_TOKENS');
     },
     register(registerDetails){
       return new Promise((resolve, reject) => {

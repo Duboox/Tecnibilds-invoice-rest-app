@@ -8,7 +8,9 @@ use Carbon\Carbon;
 use Tbappback\Invoice;
 use Tbappback\InvoiceItem;
 use Tbappback\Customer;
+use Tbappback\Notifications\NotifyUsersInvoice;
 use Tbappback\Product;
+use Tbappback\User;
 
 class InvoiceController extends Controller
 {
@@ -18,21 +20,6 @@ class InvoiceController extends Controller
         return response()
             ->json([
                 'model' => $invoices
-            ]);
-    }
-
-    public function create()
-    {
-        $customers = Customer::orderBy('name')->get();
-        $products = Product::orderBy('id')->get();
-
-        return response()
-            ->json([
-                'form' => Invoice::initialize(),
-                'option' => [
-                    'customers' => $customers,
-                    'products' => $products,
-                ]
             ]);
     }
 
@@ -66,6 +53,11 @@ class InvoiceController extends Controller
         $invoice->items()
             ->saveMany($items);
 
+        /* NOTIFY USER */
+        $users = User::all();
+        foreach ($users as $user) {
+            $user->Notify(new NotifyUsersInvoice($invoice));
+        }
         return response()
             ->json([
                 'saved' => true
@@ -81,22 +73,6 @@ class InvoiceController extends Controller
             ->json([
                 'model' => $invoice,
                 'products' => $products
-            ]);
-    }
-
-    public function edit($id)
-    {
-        $invoice = Invoice::with('items')->findOrFail($id);
-        $customers = Customer::orderBy('name')->get();
-        $products = Product::orderBy('id')->get();
-
-        return response()
-            ->json([
-                'form' => $invoice,
-                'option' => [
-                    'customers' => $customers,
-                    'products' => $products
-                ]
             ]);
     }
 

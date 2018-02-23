@@ -20,7 +20,7 @@ class InvoiceTableSeeder extends Seeder
         InvoiceItem::truncate(); // Deletes al rows in DB
 
         /* Create 1->25 Invoice's */
-        foreach (range(1, 25) as $i) {
+        foreach (range(1, 3) as $i) {
 
             $discount = $faker->numberBetween(0, 100); // $discount = 54
             $subTotal = $faker->numberBetween(500, 1000); // $subTotal = 756

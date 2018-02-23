@@ -25,6 +25,10 @@ export default {
   getDashboardMethod: 'get',
   getDashboardRequest: '/api/dashboard',
 
+  /* DASHBOARD ->POSTS<- */
+  savePostMethod: 'post',
+  savePostRequest: '/api/post',
+
   /* PRODUCTS */
   getProductMethod: 'get',
   getProductRequest: '/api/product',

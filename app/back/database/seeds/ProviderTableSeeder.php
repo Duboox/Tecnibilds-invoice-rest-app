@@ -17,7 +17,7 @@ class ProviderTableSeeder extends Seeder
 
         Provider::truncate(); // Deletes al rows in DB
 
-        foreach (range(1, 50) as $i) {
+        foreach (range(1, 5) as $i) {
             Provider::create([
                 'name' => $faker->firstName,
                 'last_name' => $faker->lastName,

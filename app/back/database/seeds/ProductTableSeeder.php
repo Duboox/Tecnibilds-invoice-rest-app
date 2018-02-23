@@ -17,7 +17,7 @@ class ProductTableSeeder extends Seeder
 
         Product::truncate(); // Deletes al rows in DB
 
-        foreach (range(1, 50) as $i) {
+        foreach (range(1, 4) as $i) {
             Product::create([
                 'user_id' => Tbappback\User::all()->random()->id,
                 'cod' => $faker->ean8,

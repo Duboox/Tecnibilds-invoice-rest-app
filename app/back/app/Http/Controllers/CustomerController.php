@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as Image;
 
 use Tbappback\Customer;
+use Tbappback\User;
+use Tbappback\Notifications\NotifyUsersCustomer;
 
 class CustomerController extends Controller
 {
@@ -63,6 +65,12 @@ class CustomerController extends Controller
         }
 
         $customer = Customer::create($requestData);
+
+        /* NOTIFY USER */
+        $users = User::all();
+        foreach ($users as $user) {
+            $user->Notify(new NotifyUsersCustomer($customer));
+        }
 
         return response()
             ->json([

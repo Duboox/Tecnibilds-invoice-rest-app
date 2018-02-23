@@ -14,25 +14,23 @@ class PostController extends Controller
     public function index()
     {
         /* Get user posts */
-        $posts = User::class->posts()->get();
+        $posts = Post::all()->get();
     }
 
     /* Create user Post */
-    public function createPost(Request $request)
-    {
-        $user_id = (Auth::user()->id);
-        $post_content = $request->input('post_content');
-        $post_image = ("");
-        $post_video = ("");
+    public function store(Request $request) {
+        $this->validate($request, [
+            'title' => 'required',
+            'content' => 'required',
+            'user_id' => 'required',
+        ]);
 
-        $post = new Post;
-        $post->user_id = ($user_id);
-        $post->content = ($post_content);
-        $post->image = ($post_image);
-        $post->video = ($post_video);
-        $post->save();
+        $post = Post::create($request->all());
 
-        return back();
+        return response()
+            ->json([
+                'saved' => true
+            ]);
     }
 
     /* Post Like*/

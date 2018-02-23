@@ -94,7 +94,7 @@
                                 <v-icon>more_vert</v-icon>
                             </v-btn>
                             <v-list>
-                                <v-list-tile>
+                                <v-list-tile @click.stop="createPostDialog = true">
                                     <v-list-tile-title>Crear Nuevo Post</v-list-tile-title>
                                 </v-list-tile>
                             </v-list>
@@ -205,6 +205,98 @@
             {{ successMessage }}
             <v-btn flat color="pink" @click.native="snackBar = false">Close</v-btn>
         </v-snackbar>
+        <v-dialog
+                v-model="createPostDialog"
+                fullscreen
+                transition="dialog-bottom-transition"
+                :overlay="false"
+                scrollable
+        >
+            <v-card tile>
+                <v-toolbar card dark color="primary">
+                    <v-btn icon @click.native="createPostDialog = false" dark>
+                        <v-icon>close</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>Crear nuevo Post</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items>
+                        <v-btn dark flat @click.native="createNewPost()">Save</v-btn>
+                    </v-toolbar-items>
+                    <v-menu bottom right offset-y>
+                        <v-btn slot="activator" dark icon>
+                            <v-icon>more_vert</v-icon>
+                        </v-btn>
+                        <v-list>
+                            <v-list-tile>
+                                <v-list-tile-title>Some Action</v-list-tile-title>
+                            </v-list-tile>
+                        </v-list>
+                    </v-menu>
+                </v-toolbar>
+                <v-card-text>
+                    <v-list three-line subheader>
+                        <v-subheader>Crear nuevo Post</v-subheader>
+                        <v-list-tile avatar>
+                            <v-list-tile-content>
+                                <v-list-tile-title>Post Title</v-list-tile-title>
+                                <v-list-tile-sub-title>
+                                    <v-text-field
+                                            name="postTitle"
+                                            v-model="newPost.title"
+                                            single-line
+                                    ></v-text-field>
+                                </v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                        <v-list-tile avatar>
+                            <v-list-tile-content>
+                                <v-list-tile-title>My Post Content</v-list-tile-title>
+                                <v-list-tile-sub-title>
+                                    <v-text-field
+                                            name="postContent"
+                                            v-model="newPost.content"
+                                            single-line
+                                    ></v-text-field>
+                                </v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                    </v-list>
+                    <v-divider></v-divider>
+                    <v-list three-line subheader>
+                        <v-subheader>General</v-subheader>
+                        <v-list-tile avatar>
+                            <v-list-tile-action>
+                                <v-checkbox></v-checkbox>
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title>Notifications</v-list-tile-title>
+                                <v-list-tile-sub-title>Notify me about updates to apps or games that I downloaded</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                        <v-list-tile avatar>
+                            <v-list-tile-action>
+                                <v-checkbox></v-checkbox>
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title>Sound</v-list-tile-title>
+                                <v-list-tile-sub-title>Auto-update apps at any time. Data charges may apply</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                        <v-list-tile avatar>
+                            <v-list-tile-action>
+                                <v-checkbox></v-checkbox>
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title>Auto-add widgets</v-list-tile-title>
+                                <v-list-tile-sub-title>Automatically add home screen widgets</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                    </v-list>
+                </v-card-text>
+
+                <div style="flex: 1 1 auto;"/>
+            </v-card>
+        </v-dialog>
     </v-layout>
 </template>
 
@@ -221,7 +313,15 @@
         ApiUsersPics: this.$configs.ApiUrl + 'images/users/',
         newPostComment: '',
         snackBar: false,
+        createPostDialog: false,
         successMessage: '',
+        newPost: {
+          title: '',
+          content: '',
+          user_id: '',
+          image: '',
+          video: '',
+        },
         simpleCards: [
           {
             icon: 'account_circle',
@@ -232,8 +332,8 @@
           {
             icon: 'event',
             color: 'info',
-            title: '600 Emails',
-            subTitle: '2 Nuevos'
+            title: '0 Productos',
+            subTitle: '0 Nuevos en la últina semana'
           },
           {
             icon: 'widgets',
@@ -404,6 +504,10 @@
           vm.simpleCards[0].title = vm.analytics.users.totalUsers + ' Usuarios';
           vm.simpleCards[0].subTitle = vm.analytics.users.newUsers + ' Nuevos en la última semana';
         }
+        if (vm.analytics.products) {
+          vm.simpleCards[1].title = vm.analytics.products.totalProducts + ' Productos';
+          vm.simpleCards[1].subTitle = vm.analytics.products.newProducts + ' Nuevos en la última semana';
+        }
         if (vm.analytics.sales) {
           vm.simpleCards[2].title = vm.analytics.sales.totalSales + ' Ventas';
           vm.simpleCards[2].subTitle = vm.analytics.sales.newSales + ' Nuevas en la última semana';
@@ -435,6 +539,27 @@
               vm.$Progress.fail();
             })
       },
+      createNewPost() {
+        let vm = this;
+        let data = {
+            title: vm.newPost.title,
+            content: vm.newPost.content,
+            user_id: vm.$store.state.users.authenticatedUser.id,
+        };
+        console.log("my awesome post", data);
+        vm.$store.dispatch('sendNewPost', data)
+            .then(response => {
+              vm.setDashboard();
+              vm.$Progress.finish();
+              vm.createPostDialog = false;
+              vm.successMessage = '¡Post creado exitosamente!';
+              vm.snackBar = true;
+              vm.newPostComment = '';
+            })
+            .catch(error => {
+              vm.$Progress.fail();
+            })
+      }
     }
   }
 </script>

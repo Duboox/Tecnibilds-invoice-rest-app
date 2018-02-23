@@ -21,6 +21,9 @@ class DashboardController extends Controller
         $totalSales = count(Invoice::all());
         $newSalesWeek = count(Invoice::where('created_at', '>=', Carbon::now()->subWeek())->get());
 
+        $totalProducts = count(Product::all());
+        $newProductsWeek = count(Product::where('created_at', '>=', Carbon::now()->subWeek())->get());
+
         $newPostsWeek = Post::where('created_at', '>=', Carbon::now()->subWeek())->with(['user','postComments.likes','postComments.user','likes'])->get();
 
         return response()
@@ -33,6 +36,10 @@ class DashboardController extends Controller
                     'sales' => [
                         'totalSales' => $totalSales,
                         'newSales' => $newSalesWeek
+                    ],
+                    'products' => [
+                        'totalProducts' => $totalProducts,
+                        'newProducts' => $newProductsWeek,
                     ]
                 ],
                 'posts' => [

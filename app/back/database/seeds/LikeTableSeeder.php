@@ -20,7 +20,7 @@ class LikeTableSeeder extends Seeder
         Like::truncate(); // Deletes al rows in DB
 
         /* Create 1->25 Like per Post */
-        foreach (range(1, 25) as $i) {
+        foreach (range(1, 4) as $i) {
             Like::create([
                 'user_id' => User::all()->random()->id,
                 'post_id' => Post::all()->random()->id,

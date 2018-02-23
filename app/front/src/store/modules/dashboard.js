@@ -52,6 +52,19 @@ export default {
             })
       })
     },
+    sendNewPost({commit, getters}, post) {
+      return new Promise((resolve, reject) => {
+        axios[config.savePostMethod](config.apiUrl + config.savePostRequest, post, {headers: getters.getHeader})
+            .then(function (response) {
+              if (response.data.saved) {
+                resolve(response);
+              }
+            })
+            .catch(error => {
+              reject(error);
+            })
+      })
+    },
   },
 
   getters: {

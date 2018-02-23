@@ -17,7 +17,7 @@ class CustomerTableSeeder extends Seeder
 
         Customer::truncate(); // Deletes al rows in DB
 
-        foreach (range(1, 50) as $i) {
+        foreach (range(1, 5) as $i) {
             Customer::create([
                 'name' => $faker->firstName,
                 'last_name' => $faker->lastName,

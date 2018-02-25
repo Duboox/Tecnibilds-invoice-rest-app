@@ -51,8 +51,11 @@ class NotifyPostOwner extends Notification
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'post' => $this->post,
-           /* 'comment' => $this->postComment */
+            'data' => [
+                'post' => $this->post,
+                'userComm' => $this->userComm,
+                'header' => ' Ha comentado tu post!'
+            ],
         ]);
     }
 

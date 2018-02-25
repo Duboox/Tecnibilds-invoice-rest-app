@@ -18,6 +18,9 @@ export default {
   getUserNotificationsMethod: 'get',
   getUserNotificationsRequest: '/api/notification',
 
+  deleteUserNotificationMethod: 'delete',
+  deleteUserNotificationRequest: '/api/notification',
+
   saveUserMethod: 'put',
   saveUserRequest: '/api/users/',
 

@@ -27,7 +27,7 @@
                                 </v-flex>
                                 <v-spacer></v-spacer>
                                 <v-btn color="primary" to="/invoice/create">Crear factura</v-btn>
-                                <v-btn icon>
+                                <v-btn icon @click="setInvoices()">
                                     <v-icon>refresh</v-icon>
                                 </v-btn>
                                 <v-menu bottom left>

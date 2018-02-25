@@ -1,4 +1,8 @@
 <style lang="scss">
+    .notification-card{
+        max-height: 350px;
+        overflow-y: scroll;
+    }
 </style>
 
 <template>
@@ -120,40 +124,44 @@
                             offset-y
                             :close-on-content-click="false"
                             :nudge-width="200"
+                            v-if="notifications"
                     >
                         <v-btn icon slot="activator">
                             <v-badge overlay color="purple" overlap>
-                                <span slot="badge" v-if="notifications">{{ notifications.length }}</span>
+                                <span slot="badge" v-if="notifications.length">{{ notifications.length }}</span>
                                 <v-icon>notifications</v-icon>
                             </v-badge>
                         </v-btn>
-                        <v-card>
+                        <v-card class="notification-card">
                             <v-list>
                                 <v-list-tile avatar v-for="(notification,i) in notifications" :key="i">
                                     <v-list-tile-avatar>
                                         <img v-if="notification.data.userComm"
-                                             :src="ApiUsersPics + notification.data.userComm.picture" :alt="notification.data.userComm.name">
+                                             :src="ApiUsersPics + notification.data.userComm.picture"
+                                             :alt="notification.data.userComm.name">
                                         <img v-if="notification.data.customer"
-                                             :src="ApiCustomersPics + notification.data.customer.picture" :alt="notification.data.customer.name">
+                                             :src="ApiCustomersPics + notification.data.customer.picture"
+                                             :alt="notification.data.customer.name">
                                     </v-list-tile-avatar>
                                     <v-list-tile-content>
                                         <v-list-tile-title>
                                             <span v-if="notification.data.userComm">{{ notification.data.userComm.name + notification.data.header }}</span>
                                             <span v-if="notification.data.customer">{{ notification.data.header + '  ' + notification.data.customer.name + '  ' + notification.data.customer.last_name }}</span>
+                                            <span v-if="notification.data.invoice">{{ notification.data.header}}</span>
                                         </v-list-tile-title>
                                         <v-list-tile-sub-title>
                                             <span class="caption" v-if="notification.data.post">{{ notification.data.post.content }}</span>
-                                            <span class="caption" v-if="notification.data.invoice">{{ notification.data.invoice.content }}</span>
+                                            <span class="caption" v-if="notification.data.invoice">{{ notification.data.invoice.title }}</span>
                                             <span class="caption" v-if="notification.data.customer">{{ notification.data.customer.company }}</span>
                                         </v-list-tile-sub-title>
                                     </v-list-tile-content>
                                     <v-list-tile-action>
-                                        <v-btn icon to="/settings">
+                                        <v-btn icon @click="deleteNotification(notification)">
                                             <v-icon>close</v-icon>
                                         </v-btn>
                                     </v-list-tile-action>
                                 </v-list-tile>
-                                <v-layout v-if="! notifications" row align-center align-content-center justify-center>
+                                <v-layout v-if="! notifications.length" row align-center align-content-center justify-center>
                                     <span class="caption">¡No tienes notificaciones!</span>
                                 </v-layout>
                             </v-list>
@@ -256,7 +264,7 @@
   export default {
     mixins: [Meta],
 
-    data () {
+    data() {
       return {
         appName: this.$configs.appName,
         appCompany: this.$configs.appCompany,
@@ -284,38 +292,22 @@
           {icon: 'chat', text: 'Chat', to: '/chat'},
           {icon: 'settings', text: 'Ajustes', to: '/settings'},
           {icon: 'help', text: 'Ayuda', to: '/help'},
-            /* {
-             icon: 'keyboard_arrow_up',
-             'icon-alt': 'keyboard_arrow_down',
-             text: 'Labels',
-             model: true,
-             children: [
-             {icon: 'add', text: 'Create label'}
-             ]
-             },
-             {
-             icon: 'keyboard_arrow_up',
-             'icon-alt': 'keyboard_arrow_down',
-             text: 'More',
-             model: false,
-             children: [
-             {text: 'Import'},
-             {text: 'Export'},
-             {text: 'Print'},
-             {text: 'Undo changes'},
-             {text: 'Other contacts'}
-             ]
-             }, */
         ]
       }
     },
     created() {
-      if (this.isAuthenticated) {
-        if (this.checkToken()) {
-          this.setAuthenticatedUser();
+      let vm = this;
+      if (vm.isAuthenticated) {
+        if (vm.checkToken) {
+          vm.setAuthenticatedUser();
+        } else {
+          // Is Auth But token expired -> logout()
+          vm.logout();
         }
+      } else {
+        // is not auth expecting for login()
       }
-        /* {{ JSON.parse(notification.data).post.content }} */
+      /* {{ JSON.parse(notification.data).post.content }} */
     },
     computed: {
       ...mapGetters({
@@ -327,9 +319,49 @@
     methods: {
       ...mapActions({
         checkToken: 'checkToken',
-        setAuthenticatedUser: 'setAuthenticatedUser',
-        logout: 'logout',
       }),
+      setAuthenticatedUser() {
+        let vm = this;
+        vm.$store.dispatch('setAuthenticatedUser')
+            .then(response => {
+              if(vm.user.id) {
+                vm.joinNotifyChannel(vm.user.id);
+              }
+            })
+            .catch(error => {
+             console.log(error)
+            })
+      },
+      logout() {
+        let vm = this;
+        vm.$store.dispatch('logout')
+            .then(redirect => {
+              vm.$router.push(redirect);
+            })
+            .catch(error => {
+              console.log(error)
+            })
+      },
+      joinNotifyChannel(UserID) {
+        let vm = this;
+        vm.$echo.private('Tbappback.User.' + UserID)
+            .listen('.Illuminate.Notifications.Events.BroadcastNotificationCreated', (notification) => {
+              vm.$store.commit('SAVE_NOTIFICATION', notification);
+            });
+      },
+      deleteNotification(notification) {
+        let vm = this;
+        vm.$Progress.start();
+        vm.$store.dispatch('deleteUserNotification', notification)
+            .then(response => {
+              vm.snackText = '¡Notificación borrada Exitosamente!';
+              vm.snackBar = true;
+              vm.$Progress.finish();
+            })
+            .catch(error => {
+              vm.$Progress.fail();
+            })
+      }
     }
   }
 </script>

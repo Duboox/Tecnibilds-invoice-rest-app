@@ -19,11 +19,11 @@ class NotificationController extends Controller
             ]);
     }
 
-    public function destroy($id)
+    public function destroy($notification_id)
     {
-        $user = User::findOrFail($id);
+        $notification = Notification::findOrFail($notification_id);
+        $notification->delete();
 
-        $userNotifications = $user->notifications();
         return response()
             ->json([
                 'deleted' => true

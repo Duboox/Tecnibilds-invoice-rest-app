@@ -77,14 +77,14 @@ router.beforeEach(
       /* Si en la meta de los routes es para visitantes */
       if(to.matched.some(record => record.meta.forVisitors)) {
         /* si es para visitantes y esta logeado ir a /home */
-        if(store.getters.isAuthenticated ) {
+        if(store.getters.isAuthenticated) {
           next({ path: '/dashboard'})
         } else {
           next()
         }
       } else if(to.matched.some(record => record.meta.forAuth)) {
         /* si es para auth y no esta logeado ir a / */
-        if( ! store.getters.isAuthenticated ) {
+        if(!store.getters.isAuthenticated) {
           next({ path: '/'})
         } else {
           next()

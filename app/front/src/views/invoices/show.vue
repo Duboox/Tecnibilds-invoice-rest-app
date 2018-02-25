@@ -25,7 +25,7 @@
                     <v-btn icon flat color="primary" :to="'/invoice/edit/' + invoice.model.id">
                         <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn icon flat color="red" @click="removeInvoice(invoice.model)">
+                    <v-btn icon flat color="red" @click="invoiceDialogDelete = true">
                         <v-icon>delete</v-icon>
                     </v-btn>
                 </v-card-title>
@@ -138,6 +138,36 @@
                 </v-container>
             </v-card>
         </v-card>
+        <v-dialog v-if="invoice" v-model="invoiceDialogDelete" max-width="500px">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">Borrar Factura</span>
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click.stop="invoiceDialogDelete = !invoiceDialogDelete">
+                        <v-icon>close</v-icon>
+                    </v-btn>
+                </v-card-title>
+                <v-card-text>
+                    <span>¿Estas seguro que deseas borrar la factura <span class="body-2">{{ invoice.model.title }}</span>?</span>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary"
+                           flat
+                           v-on:click="removeInvoice(invoice.model), invoiceDialogDelete = false">
+                        Borrar
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-snackbar
+                :timeout="3000"
+                bottom
+                v-model="snackBar"
+        >
+            {{ successMessage }}
+            <v-btn flat color="pink" @click.native="snackBar = false">Close</v-btn>
+        </v-snackbar>
     </v-layout>
 </template>
 
@@ -150,6 +180,8 @@
       return {
         pageTitle: 'Ver Factura',
         successMessage: '',
+        snackBar: false,
+        invoiceDialogDelete: false,
         headers: [
           { text: 'COD', value: 'cod', sortable: false},
           { text: 'Nombre de producto', value: 'name', sortable: false },
@@ -186,12 +218,14 @@
       },
       removeInvoice(invoice) {
         let vm = this;
+        let redirect = '/invoices';
         vm.$Progress.start();
         vm.$store.dispatch('removeInvoice', invoice)
             .then(response => {
               vm.successMessage = '¡Factura Borrada Exitosamente!';
               vm.snackBar = true;
               vm.$Progress.finish();
+              vm.$router.push(redirect);
             })
             .catch(error => {
               vm.$Progress.fail();

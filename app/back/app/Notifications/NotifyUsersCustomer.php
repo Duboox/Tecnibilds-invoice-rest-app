@@ -46,7 +46,10 @@ class NotifyUsersCustomer extends Notification
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'customer' => $this->customer,
+            'data' => [
+                'customer' => $this->customer,
+                'header' => ' Han creado un nuevo Cliente!'
+            ],
         ]);
     }
 

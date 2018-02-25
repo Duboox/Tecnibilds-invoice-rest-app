@@ -136,6 +136,10 @@
             vm.$store.commit('SAVE_MESSAGE', CommitMessage);
           });
     },
+    beforeDestroy() {
+      let vm = this;
+      vm.$echo.leave('chatRoom');
+    },
     methods: {
       setMessages() {
         let vm = this;

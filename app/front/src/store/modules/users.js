@@ -1,6 +1,5 @@
 import axios from 'axios';
 import config from '../config'
-import router from '../../router/index'
 export default {
   state: {
     tokens: {
@@ -25,7 +24,7 @@ export default {
     UPDATE_TOKENS(state, tokens){
       state.tokens = tokens
     },
-    DESTROY_TOKENS(state){
+    DESTROY_TOKENS: function (state) {
       state.tokens.access_token = null,
           state.tokens.expires_in = null,
           state.tokens.refresh_token = null,
@@ -36,13 +35,22 @@ export default {
           state.authenticatedUser.email = null,
           state.authenticatedUser.picture = null,
           state.authenticatedUser.created_at = null,
-          state.authenticatedUser.updated_at = null
+          state.authenticatedUser.updated_at = null,
+
+          state.notifications = []
     },
     SET_AUTH_USER(state, authUser){
       state.authenticatedUser = authUser
     },
     SET_NOTIFICATIONS(state, notifications){
       state.notifications = notifications
+    },
+    SAVE_NOTIFICATION(state, notification){
+      state.notifications.notifications.unshift(notification);
+    },
+    REMOVE_NOTIFICATION(state, notification){
+      let notifications = state.notifications.notifications;
+      notifications.splice(notifications.indexOf(notification), 1)
     },
     SET_ALL_USERS(state, users){
       state.allUsers = users
@@ -77,11 +85,10 @@ export default {
 
       })
     },
-    checkToken({state, getters, commit}){
+    checkToken({state, getters}){
       let token = getters.getToken;
 
       if (Date.now() > parseInt(token.expiration)) {
-        commit('DESTROY_TOKENS');
         return null
       } else {
         return true
@@ -114,11 +121,26 @@ export default {
             })
       })
     },
+    deleteUserNotification({commit, getters}, notification) {
+      return new Promise((resolve, reject) => {
+        axios[config.deleteUserNotificationMethod](config.apiUrl + config.deleteUserNotificationRequest + '/' + notification.id, {headers: getters.getHeader})
+            .then(function (response) {
+              if (response.data.deleted) {
+                commit('REMOVE_NOTIFICATION', notification);
+                resolve(response);
+              }
+            })
+            .catch(error => {
+              reject(error)
+            })
+      })
+    },
     logout({commit}) {
-      let redirect = '/';
-
-      router.push(redirect);
-      commit('DESTROY_TOKENS');
+      return new Promise((resolve, reject) => {
+        commit('DESTROY_TOKENS');
+        let redirect = '/';
+        resolve(redirect);
+      });
     },
     register(registerDetails){
       return new Promise((resolve, reject) => {
@@ -188,17 +210,21 @@ export default {
       }
     },
     getHeader(state, getters) {
-      let header = {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + getters.getToken.token
-      };
-      return header
+      if (getters.getToken) {
+        let header = {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + getters.getToken.token
+        };
+        return header
+      } else {
+        return null
+      }
     },
     getAuthenticatedUser(state) {
       return state.authenticatedUser
     },
-    getNotifications(state) {
-      return state.notifications.notifications
+    getNotifications: state => {
+      return state.notifications.notifications;
     },
     getAllUsers(state) {
       return state.allUsers

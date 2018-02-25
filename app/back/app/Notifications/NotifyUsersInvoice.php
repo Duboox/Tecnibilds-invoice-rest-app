@@ -46,7 +46,10 @@ class NotifyUsersInvoice extends Notification
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'invoice' => $this->invoice,
+            'data' => [
+                'invoice' => $this->invoice,
+                'header' => ' Han creado una nueva factura!'
+            ],
         ]);
     }
     /**

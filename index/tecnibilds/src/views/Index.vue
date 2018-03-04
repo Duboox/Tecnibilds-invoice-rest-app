@@ -7,9 +7,9 @@
             <v-parallax src="static/backs/back1.png" height="600">
                 <v-layout column align-center justify-center class="white--text">
                     <img src="../assets/logo.png" alt="Tecnibilds" height="200">
-                    <h1 class="white--text mb-2 display-1">Web development</h1>
-                    <div class="subheading mb-3 text-xs-center">Powered by Joshua Martinez.</div>
-                    <v-btn class="blue lighten-2 mt-5" dark large href="/portfolio">Conoce mas</v-btn>
+                    <h1 class="white--text mb-2 display-1">Desarrollo web</h1>
+                    <div class="subheading mb-3 text-xs-center">Joshua Martinez K.</div>
+                    <v-btn class="blue lighten-2 mt-5" dark large href="/services">Conoce mas</v-btn>
                 </v-layout>
             </v-parallax>
         </section>

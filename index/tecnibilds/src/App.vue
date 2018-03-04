@@ -13,14 +13,14 @@
                 <v-toolbar-title v-text="appName"></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-menu offset-y>
-                    <v-toolbar-side-icon class="hidden-md-and-up" slot="activator"></v-toolbar-side-icon>
+                    <v-toolbar-side-icon class="hidden-sm-and-up" slot="activator"></v-toolbar-side-icon>
                     <v-list>
                         <v-list-tile v-for="menu in menus" :key="menu.title" :to="menu.to">
                             <v-list-tile-title>{{ menu.title }}</v-list-tile-title>
                         </v-list-tile>
                     </v-list>
                 </v-menu>
-                <v-toolbar-items class="hidden-sm-and-down" v-for="menu in menus" :key="menu.title" :to="menu.to">
+                <v-toolbar-items class="hidden-xs-only" v-for="menu in menus" :key="menu.title" :to="menu.to">
                     <v-btn flat :to="menu.to">{{ menu.title }}</v-btn>
                 </v-toolbar-items>
             </v-toolbar>

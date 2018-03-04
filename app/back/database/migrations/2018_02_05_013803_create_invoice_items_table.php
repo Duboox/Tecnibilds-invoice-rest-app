@@ -19,6 +19,17 @@ class CreateInvoiceItemsTable extends Migration
             $table->integer('product_id')->unsigned();
             $table->integer('qty');
             $table->timestamps();
+
+            $table->foreign('invoice_id')
+                ->references('id')
+                ->on('invoices')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->foreign('product_id')
+                ->references('id')
+                ->on('products')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

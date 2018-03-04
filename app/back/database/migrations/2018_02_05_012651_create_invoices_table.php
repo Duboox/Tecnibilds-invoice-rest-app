@@ -23,6 +23,12 @@ class CreateInvoicesTable extends Migration
             $table->decimal('sub_total');
             $table->decimal('total');
             $table->timestamps();
+
+            $table->foreign('customer_id')
+                ->references('id')
+                ->on('customers')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

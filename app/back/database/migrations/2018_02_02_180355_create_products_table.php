@@ -25,6 +25,12 @@ class CreateProductsTable extends Migration
             $table->integer('stock');
             $table->decimal('unit_price');
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

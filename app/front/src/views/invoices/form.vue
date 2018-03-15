@@ -175,7 +175,7 @@
                                             item-text="text"
                                             item-value="status"
                                             label="Estado"
-                                            return-object
+                                            return-value
                                             single-line
                                             bottom
                                     ></v-select>
@@ -467,5 +467,3 @@
     }
   }
 </script>
-
-

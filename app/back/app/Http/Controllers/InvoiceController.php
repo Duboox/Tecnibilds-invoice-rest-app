@@ -16,6 +16,8 @@ use Tbappback\User;
 use Illuminate\Support\Facades\Mail;
 use Tbappback\Mail\InvoiceCreated;
 
+use Nexmo\Laravel\Facade\Nexmo;
+
 class InvoiceController extends Controller
 {
     public function index()
@@ -66,6 +68,12 @@ class InvoiceController extends Controller
         foreach ($users as $user) {
             $user->Notify(new NotifyUsersInvoice($invoice));
         }
+
+        Nexmo::message()->send([
+      'to'   => '584242336927',
+      'from' => 'NEXMO',
+      'text' => 'Han creado una nueva factura en Tecnibilds! - '
+  ]);
         return response()
             ->json([
                 'saved' => true

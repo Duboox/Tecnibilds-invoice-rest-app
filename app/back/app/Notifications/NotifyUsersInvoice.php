@@ -9,6 +9,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Tbappback\Invoice;
 
+
 class NotifyUsersInvoice extends Notification
 {
     use Queueable;

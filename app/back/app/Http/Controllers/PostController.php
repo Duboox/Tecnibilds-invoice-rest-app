@@ -9,6 +9,11 @@ use Tbappback\Post;
 use Tbappback\PostComment;
 use Tbappback\Like;
 
+// DELETE THIS
+// use Illuminate\Support\Facades\Mail;
+// use Tbappback\Mail\InvoiceCreated;
+
+
 class PostController extends Controller
 {
     public function index()
@@ -26,6 +31,12 @@ class PostController extends Controller
         ]);
 
         $post = Post::create($request->all());
+
+        /* NOTIFY USER */
+
+  //       Mail::to($request->user())
+  //           ->send(new InvoiceCreated($post));
+  // //            ->cc(['joshua@tecnibilds.com.ve'])
 
         return response()
             ->json([

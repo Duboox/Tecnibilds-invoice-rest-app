@@ -13,6 +13,8 @@
         "laravel/passport": "^4.0",
         "laravel/tinker": "~1.0",
         "nesbot/carbon": "^1.22",
+        "nexmo/client": "^1.2",
+        "nexmo/laravel": "^1.1",
         "pusher/pusher-php-server": "^3.0"
     },
     "require-dev": {

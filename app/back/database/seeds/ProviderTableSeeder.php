@@ -15,7 +15,7 @@ class ProviderTableSeeder extends Seeder
     {
         $faker = Factory::create(); // Create a instance of the faker/factory
 
-        Provider::truncate(); // Deletes al rows in DB
+        // Provider::delete(); // Deletes al rows in DB
 
         foreach (range(1, 5) as $i) {
             Provider::create([

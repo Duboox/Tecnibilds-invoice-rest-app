@@ -46,6 +46,7 @@
                                <v-card-title primary-title>
                                    <v-layout column align-content-center justify-center align-center>
                                        <h3 class="subheading mb-0">{{ customer.name + ' ' + customer.last_name}}</h3>
+                                       <div class="caption grey--text">{{ customer.rif }}</div>
                                        <div class="caption grey--text">{{ customer.email }}</div>
                                    </v-layout>
                                </v-card-title>

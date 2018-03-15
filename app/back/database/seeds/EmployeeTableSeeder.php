@@ -15,7 +15,7 @@ class EmployeeTableSeeder extends Seeder
     {
         $faker = Factory::create(); // Create a instance of the faker/factory
 
-        Employee::truncate(); // Deletes al rows in DB
+        // Employee::delete(); // Deletes al rows in DB
 
         foreach (range(1, 4) as $i) {
             Employee::create([

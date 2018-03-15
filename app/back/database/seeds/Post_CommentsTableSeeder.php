@@ -18,7 +18,7 @@ class Post_CommentsTableSeeder extends Seeder
     {
         $faker = Factory::create(); // Create a instance of the faker/factory
 
-        PostComment::truncate(); // Deletes al rows in DB
+       // PostComment::delete(); // Deletes al rows in DB
 
         /* Create 1->25 Posts */
         foreach (range(1, 3) as $i) {

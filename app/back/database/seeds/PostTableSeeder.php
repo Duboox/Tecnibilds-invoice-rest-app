@@ -16,7 +16,7 @@ class PostTableSeeder extends Seeder
     {
         $faker = Factory::create(); // Create a instance of the faker/factory
 
-        Post::truncate(); // Deletes al rows in DB
+       // Post::delete(); // Deletes al rows in DB
 
         /* Create 1->25 Posts */
         foreach (range(1, 2) as $i) {

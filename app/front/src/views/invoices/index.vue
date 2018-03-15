@@ -62,11 +62,21 @@
                                 </template>
                                 <template slot="items" slot-scope="props">
                                     <tr @click="seeInvoice(props.item.id)" class="invoiceRow">
+                                        <td>{{ props.item.number }}</td>
                                         <td>{{ props.item.title }}</td>
                                         <td class="text-xs-right">{{ props.item.customer.company }}</td>
-                                        <td class="text-xs-right">{{ props.item.date }}</td>
-                                        <td class="text-xs-right">{{ props.item.due_date }}</td>
+                                        <td v-if="props.item.status == 0">
+                                            <v-chip class="ml-3" disabled small color="light-blue">PENDIENTE</v-chip>
+                                        </td>
+                                        <td class="text-xs-right" v-else-if="props.item.status == 1">
+                                        <v-chip disabled small color="light-green">PAGADA</v-chip>
+                                        </td>
+                                        <td class="text-xs-right" v-else>
+                                            <v-chip disabled small color="red">EXPIRADA</v-chip>
+                                        </td>
                                         <td class="text-xs-right">{{ props.item.sub_total }}</td>
+                                        <td class="text-xs-right">{{ props.item.iva_percent }}</td>
+                                        <td class="text-xs-right">{{ props.item.iva }}</td>
                                         <td class="text-xs-right">{{ props.item.discount }}</td>
                                         <td class="text-xs-right">{{ props.item.total }}</td>
                                     </tr>
@@ -88,15 +98,17 @@
         successMessage: '',
           /* PRODUCTS DATA-TABLE */
         pagination: {
-          sortBy: 'title',
+          sortBy: 'number',
         },
         search: '',
         headers: [
+          {text: 'No', value: 'number'},
           {text: 'Titulo de la factura', value: 'title'},
           {text: 'Cliente', value: 'customer_id'},
-          {text: 'Fecha', value: 'date'},
-          {text: 'Fecha Límite', value: 'due_date'},
+          {text: 'Estado', value: 'status'},
           {text: 'Sub total', value: 'sub_total'},
+          {text: 'IVA %', value: 'iva_percent'},
+          {text: 'IVA', value: 'iva'},
           {text: 'Descuento', value: 'discount'},
           {text: 'Total', value: 'total'}
         ],
@@ -125,7 +137,7 @@
       },
       seeInvoice(ID) {
         this.$router.push({ path: '/invoice/show/' + ID })
-      }
+      },
     }
   }
 </script>

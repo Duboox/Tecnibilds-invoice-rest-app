@@ -1,4 +1,7 @@
 <style lang="scss">
+    .percent {
+
+    }
 </style>
 
 <template>
@@ -35,8 +38,16 @@
                             <v-layout row justify-space-around wrap class="pb-2">
                                 <v-flex xs6 md3 lg3>
                                     <v-layout column>
-                                        <span class="title">Factura No.</span>
-                                        <span class="body-1">{{invoice.model.id}}</span>
+                                        <v-layout row>
+                                            <v-flex>
+                                                <span class="title">Factura No.</span>
+                                            </v-flex>
+                                        </v-layout>
+                                        <v-layout row>
+                                            <v-flex>
+                                                <span class="body-1">{{invoice.model.number}}</span>
+                                            </v-flex>
+                                        </v-layout>
                                     </v-layout>
                                 </v-flex>
                                 <v-flex xs6 md3 lg3>
@@ -83,6 +94,16 @@
                                         <span class="body-1">{{invoice.model.total}}</span>
                                     </v-layout>
                                 </v-flex>
+                                <v-flex xs6 md3 lg3>
+                                    <v-chip v-if="invoice.model.status == 0" class="ml-3" disabled small
+                                            color="light-blue">PENDIENTE
+                                    </v-chip>
+                                    <v-chip v-else-if="invoice.model.status == 1" disabled small
+                                            color="light-green">
+                                        PAGADA
+                                    </v-chip>
+                                    <v-chip v-else disabled small color="red">EXPIRADA</v-chip>
+                                </v-flex>
                             </v-layout>
                             <v-divider></v-divider>
                             <v-layout row justify-space-around wrap class="pt-3">
@@ -97,9 +118,13 @@
                                             <td>{{ invoice.products[props.item.product_id - 1].cod }}</td>
                                             <td>{{ invoice.products[props.item.product_id - 1].name }}</td>
                                             <td>{{ invoice.products[props.item.product_id - 1].description }}</td>
-                                            <td class="text-xs-right">{{ invoice.products[props.item.product_id - 1].unit_price }}</td>
+                                            <td class="text-xs-right">{{ invoice.products[props.item.product_id -
+                                                1].unit_price }}
+                                            </td>
                                             <td class="text-xs-right">{{ props.item.qty }}</td>
-                                            <td class="text-xs-right">{{ props.item.qty *  invoice.products[props.item.product_id - 1].unit_price }}</td>
+                                            <td class="text-xs-right">{{ props.item.qty *
+                                                invoice.products[props.item.product_id - 1].unit_price }}
+                                            </td>
                                         </template>
                                         <template slot="footer">
                                             <tr>
@@ -109,6 +134,17 @@
                                                 </td>
                                                 <td colspan="1">
                                                     <strong>{{invoice.model.sub_total}}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4"></td>
+                                                <td colspan="1">
+                                                    <span class="caption">IVA</span>
+                                                    <strong>{{invoice.model.iva_percent}}</strong>
+                                                    <span class="percent">&#37;</span>
+                                                </td>
+                                                <td colspan="1">
+                                                    <strong>{{invoice.model.iva}}</strong>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -148,7 +184,8 @@
                     </v-btn>
                 </v-card-title>
                 <v-card-text>
-                    <span>¿Estas seguro que deseas borrar la factura <span class="body-2">{{ invoice.model.title }}</span>?</span>
+                    <span>¿Estas seguro que deseas borrar la factura <span
+                            class="body-2">{{ invoice.model.title }}</span>?</span>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -176,19 +213,19 @@
   import JSPDF from 'jspdf';
 
   export default {
-    data () {
+    data() {
       return {
         pageTitle: 'Ver Factura',
         successMessage: '',
         snackBar: false,
         invoiceDialogDelete: false,
         headers: [
-          { text: 'COD', value: 'cod', sortable: false},
-          { text: 'Nombre de producto', value: 'name', sortable: false },
-          { text: 'Descripción', value: 'description', sortable: false },
-          { text: 'Precio Unitario', value: 'unit_price', sortable: false },
-          { text: 'Cantidad', value: 'qty', sortable: false },
-          { text: 'Total', value: 'total', sortable: false },
+          {text: 'COD', value: 'cod', sortable: false},
+          {text: 'Nombre de producto', value: 'name', sortable: false},
+          {text: 'Descripción', value: 'description', sortable: false},
+          {text: 'Precio Unitario', value: 'unit_price', sortable: false},
+          {text: 'Cantidad', value: 'qty', sortable: false},
+          {text: 'Total', value: 'total', sortable: false},
         ],
       }
     },
@@ -231,19 +268,19 @@
               vm.$Progress.fail();
             })
       },
-      generatePDF(){
+      generatePDF() {
         let vm = this;
         let pdfName = vm.invoice.model.title + '__' + vm.invoice.model.created_at;
         let doc = new JSPDF();
         let invoiceItemsLength = vm.invoice.model.items.length;
 
         doc.text(vm.invoice.model.title, 10, 10);
-        doc.text(vm.invoice.model.created_at,10,15);
+        doc.text(vm.invoice.model.created_at, 10, 15);
         for (let i = 0; i < invoiceItemsLength; i++) {
-          doc.text(vm.invoice.products[vm.invoice.model.items[i].product_id -1].name, 15, 30+(i * 10));
+          doc.text(vm.invoice.products[vm.invoice.model.items[i].product_id - 1].name, 15, 30 + (i * 10));
         }
         for (let i = 0; i < invoiceItemsLength; i++) {
-          doc.text(vm.invoice.products[vm.invoice.model.items[i].product_id -1].unit_price + " $", 150, 30+(i * 10));
+          doc.text(vm.invoice.products[vm.invoice.model.items[i].product_id - 1].unit_price + " $", 150, 30 + (i * 10));
         }
         doc.text("Sub total: " + vm.invoice.model.sub_total, 120, 100);
         doc.text("Descuento: " + vm.invoice.model.discount, 120, 110);

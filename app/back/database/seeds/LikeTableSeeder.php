@@ -17,7 +17,7 @@ class LikeTableSeeder extends Seeder
      */
     public function run()
     {
-        Like::truncate(); // Deletes al rows in DB
+       // Like::delete(); // Deletes al rows in DB
 
         /* Create 1->25 Like per Post */
         foreach (range(1, 4) as $i) {

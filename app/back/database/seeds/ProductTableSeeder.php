@@ -15,7 +15,7 @@ class ProductTableSeeder extends Seeder
     {
         $faker = Factory::create(); // Create a instance of the faker/factory
 
-        Product::truncate(); // Deletes al rows in DB
+       // Product::delete(); // Deletes al rows in DB
 
         foreach (range(1, 4) as $i) {
             Product::create([

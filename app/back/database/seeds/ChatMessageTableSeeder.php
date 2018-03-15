@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 use Faker\Factory; // Faker
 use Tbappback\ChatMessage; // DB Model
 
+use Illuminate\Support\Facades\DB; // class for truncate(delete)
+
 class ChatMessageTableSeeder extends Seeder
 {
     /**
@@ -15,7 +17,9 @@ class ChatMessageTableSeeder extends Seeder
     {
         $faker = Factory::create(); // Create a instance of the faker/factory
 
-        ChatMessage::truncate(); // Deletes al rows in DB
+       // DB::table('chat_messages')->delete();
+
+       // ChatMessage::truncate(); // Deletes al rows in DB
 
         foreach (range(1, 2) as $i) {
             ChatMessage::create([

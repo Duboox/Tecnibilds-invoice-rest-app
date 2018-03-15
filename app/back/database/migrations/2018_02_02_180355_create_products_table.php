@@ -23,7 +23,7 @@ class CreateProductsTable extends Migration
             $table->string('description');
             $table->integer('rating');
             $table->integer('stock');
-            $table->decimal('unit_price');
+            $table->bigInteger('unit_price');
             $table->timestamps();
 
             $table->foreign('user_id')

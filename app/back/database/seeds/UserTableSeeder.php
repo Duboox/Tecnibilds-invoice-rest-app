@@ -15,7 +15,7 @@ class UserTableSeeder extends Seeder
     {
         $faker = Factory::create(); // Create a instance of the faker/factory
 
-        User::truncate(); // Deletes al rows in DB
+       // User::delete(); // Deletes al rows in DB
 
         /* Create 1->25 User's */
         static $password;

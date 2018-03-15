@@ -19,6 +19,7 @@ class CreateCustomersTable extends Migration
             $table->string('last_name');
             $table->string('picture')->default('default.jpg');
             $table->string('company');
+            $table->string('rif')->default("J-0000000-0");;
             $table->string('address');
             $table->string('phone');
             $table->string('gender');

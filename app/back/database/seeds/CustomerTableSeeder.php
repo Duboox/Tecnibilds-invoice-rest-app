@@ -15,7 +15,7 @@ class CustomerTableSeeder extends Seeder
     {
         $faker = Factory::create(); // Create a instance of the faker/factory
 
-        Customer::truncate(); // Deletes al rows in DB
+       // Customer::delete(); // Deletes al rows in DB
 
         foreach (range(1, 5) as $i) {
             Customer::create([
@@ -23,6 +23,7 @@ class CustomerTableSeeder extends Seeder
                 'last_name' => $faker->lastName,
                 'address' => $faker->address,
                 'company' => $faker->company,
+                'rif' => 'J-'.mt_rand(0, 99999999).'-'.$faker->randomLetter,
                 'phone' => $faker->phoneNumber,
                 'gender' => $faker->randomElement(['male', 'female']),
                 'email' => $faker->email,

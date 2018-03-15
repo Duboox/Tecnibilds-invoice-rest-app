@@ -35,6 +35,7 @@ export default {
         due_date: '',
         title: '',
         discount: 0,
+        iva_percent: 0,
         customer_id: null,
         items: [],
         customer: {

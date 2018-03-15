@@ -30,11 +30,11 @@ class CreateLikesTable extends Migration
                 ->on('posts')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            /* $table->foreign('post_comment_id')
+            $table->foreign('post_comment_id')
                 ->references('id')
                 ->on('post_comments')
                 ->onDelete('cascade')
-                ->onUpdate('cascade');*/
+                ->onUpdate('cascade');
         });
     }
 

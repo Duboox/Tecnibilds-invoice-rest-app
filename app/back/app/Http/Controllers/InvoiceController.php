@@ -12,6 +12,10 @@ use Tbappback\Notifications\NotifyUsersInvoice;
 use Tbappback\Product;
 use Tbappback\User;
 
+// DELETE THIS
+use Illuminate\Support\Facades\Mail;
+use Tbappback\Mail\InvoiceCreated;
+
 class InvoiceController extends Controller
 {
     public function index()
@@ -27,9 +31,12 @@ class InvoiceController extends Controller
     {
         $this->validate($request, [
             'customer_id' => 'required|exists:customers,id',
+            'number' => 'required|numeric|min:0',
+            'status' => 'required|numeric|min:0',
             'title' => 'required',
             'date' => 'required|date_format:Y-m-d',
             'due_date' => 'required|date_format:Y-m-d',
+            'iva_percent' => 'required|numeric|min:0',
             'discount' => 'required|numeric|min:0',
             'items' => 'required|array|min:1',
             'items.*.product_id' => 'required|numeric|min:1',
@@ -46,7 +53,8 @@ class InvoiceController extends Controller
             $items[] = new InvoiceItem($item);
         }
 
-        $data['total'] = $data['sub_total'] - $data['discount'];
+        $data['iva'] = ( $data['sub_total'] * $data['iva_percent'] ) / 100;
+        $data['total'] = ($data['sub_total'] + $data['iva']) - $data['discount'];
 
         $invoice = Invoice::create($data);
 
@@ -80,6 +88,8 @@ class InvoiceController extends Controller
     {
         $this->validate($request, [
             'customer_id' => 'required|exists:customers,id',
+            'number' => 'required|numeric|min:0',
+            'status' => 'required|numeric|min:0',
             'title' => 'required',
             'date' => 'required|date_format:Y-m-d',
             'due_date' => 'required|date_format:Y-m-d',
@@ -112,7 +122,8 @@ class InvoiceController extends Controller
             }
         }
 
-        $data['total'] = $data['sub_total'] - $data['discount'];
+        $data['iva'] = ($data['sub_total'] * $data['iva_percent']) / 100;
+        $data['total'] = ($data['sub_total'] + $data['iva']) - $data['discount'];
 
         $invoice->update($data);
 
@@ -128,6 +139,13 @@ class InvoiceController extends Controller
             $invoice->items()
                 ->saveMany($items);
         }
+
+//        TESTING HERE DELETE
+        $Updatedinvoice = Invoice::findOrFail($invoice->id);
+        Mail::to($request->user())
+            ->send(new InvoiceCreated($Updatedinvoice));
+//            ->cc(['joshua@tecnibilds.com.ve'])
+
 
         return response()
             ->json([

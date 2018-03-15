@@ -28,6 +28,7 @@
                                         <span class="title">Factura No.</span>
                                         <v-flex xs10>
                                             <v-text-field
+                                                    v-model="invoice.model.number"
                                                     :counter="10"
                                                     required
                                             ></v-text-field>
@@ -166,6 +167,20 @@
                                     </v-layout>
                                 </v-flex>
                             </v-layout>
+                            <v-layout row justify-space-around wrap class="pb-2">
+                                <v-flex xs6 md3 lg3>
+                                    <v-select
+                                            :items="invoiceStatus"
+                                            v-model="invoice.model.status"
+                                            item-text="text"
+                                            item-value="status"
+                                            label="Estado"
+                                            return-object
+                                            single-line
+                                            bottom
+                                    ></v-select>
+                                </v-flex>
+                            </v-layout>
                             <v-divider></v-divider>
                             <v-layout row justify-space-around wrap class="pt-3" v-if="products.model.length > 0">
                                 <v-flex xs12 md12 lg12>
@@ -226,6 +241,29 @@
                                             <tr>
                                                 <td colspan="5"></td>
                                                 <td colspan="1">
+                                                    <span class="caption">IVA <strong>&#37;</strong></span>
+                                                </td>
+                                                <td colspan="1">
+                                                    <v-text-field
+                                                            v-model="invoice.model.iva_percent"
+                                                    ></v-text-field>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5"></td>
+                                                <td colspan="1">
+                                                    <span class="caption">IVA</span>
+                                                </td>
+                                                <td colspan="1">
+                                                    <v-text-field
+                                                            disabled
+                                                            v-model="iva"
+                                                    ></v-text-field>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5"></td>
+                                                <td colspan="1">
                                                     <span class="caption">Descuento</span>
                                                 </td>
                                                 <td colspan="1">
@@ -272,7 +310,7 @@
   import {mapGetters, mapActions} from 'vuex';
 
   export default {
-    data () {
+    data() {
       return {
         pageTitle: 'Crear Factura',
         successMessage: '',
@@ -292,6 +330,20 @@
           {text: 'Total', value: 'total', sortable: false},
           {text: 'Acciones', value: 'actions', sortable: false},
         ],
+        invoiceStatus: [
+          {
+            status: 0,
+            text: 'PENDIENTE',
+          },
+          {
+            status: 1,
+            text: 'PAGADA',
+          },
+          {
+            status: 2,
+            text: 'EXPIRADA',
+          }
+        ]
       }
     },
     computed: {
@@ -302,18 +354,22 @@
       }),
       subTotal() {
         let vm = this;
-        if(vm.invoice.model.items.length > 0 && vm.products.model.length > 0) {
+        if (vm.invoice.model.items.length > 0 && vm.products.model.length > 0) {
           return vm.invoice.model.items.reduce(function (carry, item) {
             if (item.product_id) {
-              return carry + parseFloat(item.qty) * parseFloat(vm.products.model[item.product_id -1].unit_price)
+              return carry + parseFloat(item.qty) * parseFloat(vm.products.model[item.product_id - 1].unit_price)
             }
           }, 0)
         }
 
       },
+      iva() {
+        let vm = this;
+        return vm.subTotal * parseFloat(vm.invoice.model.iva_percent) / 100
+      },
       total() {
         let vm = this;
-        return vm.subTotal - parseFloat(vm.invoice.model.discount)
+        return (vm.subTotal + vm.iva) - parseFloat(vm.invoice.model.discount)
       }
     },
     created() {
@@ -345,13 +401,13 @@
               vm.$Progress.fail();
             })
       },
-      addItem(){
+      addItem() {
         let vm = this;
-          let item = {
-            invoice_id: 0,
-            product_id: 1,
-            qty: 1,
-          }
+        let item = {
+          invoice_id: 0,
+          product_id: 1,
+          qty: 1,
+        }
         vm.invoice.model.items.push(item);
       },
       /* PRODUCTS FOR INVOICE */

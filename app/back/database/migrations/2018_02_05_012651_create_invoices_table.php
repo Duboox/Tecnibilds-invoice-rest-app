@@ -15,13 +15,17 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
+            $table->bigInteger('number')->default(000000000);
             $table->integer('customer_id')->unsigned();
             $table->string('title');
             $table->date('date');
             $table->date('due_date');
-            $table->decimal('discount')->default(0);
-            $table->decimal('sub_total');
-            $table->decimal('total');
+            $table->integer('status')->default(0);
+            $table->integer('iva_percent')->default(0);
+            $table->bigInteger('iva')->default(0);
+            $table->bigInteger('discount')->default(0);
+            $table->bigInteger('sub_total');
+            $table->bigInteger('total');
             $table->timestamps();
 
             $table->foreign('customer_id')

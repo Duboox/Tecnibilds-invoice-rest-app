@@ -110,17 +110,16 @@
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs10 md6 lg6>
-                                        <v-select
-                                                :items="selectGender"
-                                                v-model="customer.model.gender"
-                                                label="Genero"
-                                                single-line
-                                                bottom
-                                        ></v-select>
+                                        <v-text-field
+                                                label="RIF"
+                                                v-model="customer.model.rif"
+                                                :counter="15"
+                                                required
+                                        ></v-text-field>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout row justify-space-around wrap>
-                                    <v-flex xs10 md6 lg6>
+                                    <v-flex xs10 md4 lg4>
                                         <v-text-field
                                                 label="E-mail"
                                                 v-model="customer.model.email"
@@ -128,13 +127,22 @@
                                                 required
                                         ></v-text-field>
                                     </v-flex>
-                                    <v-flex xs10 md6 lg6>
+                                    <v-flex xs10 md4 lg4>
                                         <v-text-field
                                                 label="Nº Telefonico"
                                                 v-model="customer.model.phone"
                                                 :counter="8"
                                                 required
                                         ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs10 md4 lg4>
+                                        <v-select
+                                                :items="selectGender"
+                                                v-model="customer.model.gender"
+                                                label="Genero"
+                                                single-line
+                                                bottom
+                                        ></v-select>
                                     </v-flex>
                                 </v-layout>
                             </v-form>

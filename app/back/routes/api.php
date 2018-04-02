@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'auth:api'], function () {
     /* App Resource Routes */
     Route::resource('users', 'UserController');
-    Route::resource('dashboard', 'DashboardController');
+
     Route::resource('message', 'ChatMessageController');
     Route::resource('product', 'ProductController');
     Route::resource('customer', 'CustomerController');
@@ -33,7 +33,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('post', 'PostController');
     Route::resource('postComment', 'PostCommentsController');
 });
-
+Route::resource('dashboard', 'DashboardController');
 // Testing Route Json   :: En http-> api/test
 /* Route::get('/test', function () {
     return response()->json([

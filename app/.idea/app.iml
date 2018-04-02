@@ -37,10 +37,15 @@
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/mtdowling/cron-expression" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/myclabs/deep-copy" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/nesbot/carbon" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/nexmo/client" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/nexmo/laravel" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/nikic/php-parser" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/paragonie/random_compat" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/phar-io/manifest" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/phar-io/version" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/php-http/guzzle6-adapter" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/php-http/httplug" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/php-http/promise" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/phpdocumentor/reflection-common" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/phpdocumentor/reflection-docblock" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/phpdocumentor/type-resolver" />

@@ -69,11 +69,13 @@ class InvoiceController extends Controller
             $user->Notify(new NotifyUsersInvoice($invoice));
         }
 
+        /* SMS NOTIFY */
         Nexmo::message()->send([
-      'to'   => '584242336927',
-      'from' => 'NEXMO',
-      'text' => 'Han creado una nueva factura en Tecnibilds! - '
-  ]);
+            'to'   => '584242336927',
+            'from' => 'NEXMO',
+            'text' => 'Han creado una nueva factura en Tecnibilds! - '
+        ]);
+
         return response()
             ->json([
                 'saved' => true

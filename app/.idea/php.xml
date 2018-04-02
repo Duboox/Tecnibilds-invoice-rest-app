@@ -90,6 +90,11 @@
       <path value="$PROJECT_DIR$/back/vendor/league/event" />
       <path value="$PROJECT_DIR$/back/vendor/sebastian/version" />
       <path value="$PROJECT_DIR$/back/vendor/intervention/image" />
+      <path value="$PROJECT_DIR$/back/vendor/nexmo/client" />
+      <path value="$PROJECT_DIR$/back/vendor/nexmo/laravel" />
+      <path value="$PROJECT_DIR$/back/vendor/php-http/promise" />
+      <path value="$PROJECT_DIR$/back/vendor/php-http/guzzle6-adapter" />
+      <path value="$PROJECT_DIR$/back/vendor/php-http/httplug" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7" />

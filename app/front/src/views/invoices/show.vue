@@ -2,6 +2,12 @@
     .percent {
 
     }
+    #invoiceBackground {
+        display: none;
+    }
+    #invoiceLogo {
+        display: none;
+    }
 </style>
 
 <template>
@@ -205,6 +211,8 @@
             {{ successMessage }}
             <v-btn flat color="pink" @click.native="snackBar = false">Close</v-btn>
         </v-snackbar>
+        <img id="invoiceBackground" src="../../assets/Invoice-background.png" alt="">
+        <img id="invoiceLogo" src="../../assets/logo.png" alt="">
     </v-layout>
 </template>
 
@@ -268,23 +276,62 @@
               vm.$Progress.fail();
             })
       },
+      getBase64Image(img) {
+        let canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        let ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+
+        return canvas.toDataURL("image/png");
+      },
       generatePDF() {
         let vm = this;
+        /* DOCS VARS */
+        let invoiceBackground = vm.getBase64Image(document.getElementById("invoiceBackground"));
+        let invoiceLogo = vm.getBase64Image(document.getElementById("invoiceLogo"));
+        let backgroundHeight = '150';
         let pdfName = vm.invoice.model.title + '__' + vm.invoice.model.created_at;
-        let doc = new JSPDF();
         let invoiceItemsLength = vm.invoice.model.items.length;
 
-        doc.text(vm.invoice.model.title, 10, 10);
-        doc.text(vm.invoice.model.created_at, 10, 15);
+        let doc = new JSPDF();
+        let docWidth = doc.internal.pageSize.width;
+        let docHeight = doc.internal.pageSize.height;
+
+        doc.setFont("helvetica");
+        doc.setFontType("bold");
+        doc.setFontSize(9);
+
+        doc.addImage(invoiceBackground, 'JPEG', 0, 0, docWidth, backgroundHeight);
+        doc.addImage(invoiceLogo, 'JPEG', 3, 3, 25, 25);
+
+        doc.text("TECNIBILDS C.A.", 33, 10);
+        doc.text("Av Tamanaco, Edf. Tamanaco, Piso 4, Ofc. 2", 33, 14);
+        doc.text("Chacaito, Distrito capital.", 33, 18);
+
+        doc.text("" + vm.invoice.model.number, 188, 9);
+        doc.text("0212 567 2348", 37, 23);
+        doc.text("contacto@tecnibilds.com.ve", 72, 23);
+        doc.text("J-456Af324", 115, 16);
+        doc.text(vm.invoice.model.created_at, 165, 16);
+        doc.text("Caracas", 165, 22);
+
+        doc.text(vm.invoice.model.customer.name + " " + vm.invoice.model.customer.last_name + " / " + vm.invoice.model.customer.company, 45, 33);
+        doc.text("" + vm.invoice.model.customer.rif, 160, 33);
+        doc.text("" + vm.invoice.model.customer.address, 29, 41);
+        doc.text("" + vm.invoice.model.customer.phone, 80, 48);
+
         for (let i = 0; i < invoiceItemsLength; i++) {
-          doc.text(vm.invoice.products[vm.invoice.model.items[i].product_id - 1].name, 15, 30 + (i * 10));
+          doc.text("" + vm.invoice.model.items[i].qty, 18, 63 + (i * 8));
+          doc.text(vm.invoice.products[vm.invoice.model.items[i].product_id - 1].name, 28, 63 + (i * 8));
+
+          doc.text(vm.invoice.products[vm.invoice.model.items[i].product_id - 1].unit_price + "", 150, 63 + (i * 8));
+          doc.text((vm.invoice.products[vm.invoice.model.items[i].product_id - 1].unit_price * vm.invoice.model.items[i].qty) + "", 170, 63 + (i * 8));
         }
-        for (let i = 0; i < invoiceItemsLength; i++) {
-          doc.text(vm.invoice.products[vm.invoice.model.items[i].product_id - 1].unit_price + " $", 150, 30 + (i * 10));
-        }
-        doc.text("Sub total: " + vm.invoice.model.sub_total, 120, 100);
-        doc.text("Descuento: " + vm.invoice.model.discount, 120, 110);
-        doc.text("Total: " + vm.invoice.model.total, 120, 120);
+        doc.text("" + vm.invoice.model.sub_total, 170, 118);
+        doc.text("" + vm.invoice.model.iva_percent, 158, 126);
+        doc.text("" + vm.invoice.model.iva, 170, 126);
+        doc.text("" + vm.invoice.model.total, 170, 135);
         doc.save(pdfName + '.pdf');
       }
     }

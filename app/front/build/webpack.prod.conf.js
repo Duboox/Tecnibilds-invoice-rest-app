@@ -13,7 +13,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const env = require('../config/prod.env')
 
-var PrerenderSpaPlugin = require('prerender-spa-plugin')
+// var PrerenderSpaPlugin = require('prerender-spa-plugin')
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -118,12 +118,12 @@ const webpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*']
       }
     ]),
-	new PrerenderSpaPlugin(
-      // Absolute path to compiled SPA
-      path.join(__dirname, '../dist'),
-      // List of routes to prerender
-      [ '/', '/contact', '/work', '/services', '/about' ]
-    ) 
+	//new PrerenderSpaPlugin(
+  //    // Absolute path to compiled SPA
+  //    path.join(__dirname, '../dist'),
+  //    // List of routes to prerender
+  //    [ '/', '/contact', '/work', '/services', '/about' ]
+  //  ) 
   ]
 })
 

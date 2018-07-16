@@ -8,6 +8,9 @@ import Pusher from 'pusher-js';
 
 Vue.config.productionTip = false;
 
+//App Locale
+const appLocale = 'es'
+
 // Polyfills IE-11
 import "babel-polyfill";
 
@@ -37,6 +40,14 @@ Vue.use(VueCharts);
 // Chat Scroll Package
 import ChatScroll from './packages/chat-scroll/chat-scroll'
 Vue.use(ChatScroll);
+
+// Moment Js for Dates
+const moment = require('moment')
+require('moment/locale/' + appLocale)
+import vueMoment from 'vue-moment'
+Vue.use(vueMoment, {
+  moment
+});
 
 // Vue-Laravel Echo
 if(store.getters.isAuthenticated){

@@ -116,7 +116,7 @@
                                         <v-layout row align-start>
                                             <v-layout column>
                                                 <span class="caption mr-3" color="blue">{{ post.user.name }}</span>
-                                                <span class="caption grey--text">{{post.created_at}}</span>
+                                                <span class="caption grey--text">{{ post.created_at | moment("from", "now") }}</span>
                                             </v-layout>
                                             <v-layout column>
                                                 <span class="body-1">{{post.content}}</span>
@@ -144,7 +144,7 @@
                                                         <v-layout row align-start>
                                                             <v-layout column>
                                                                 <span class="caption mr-3" color="blue">{{comment.user.name}}</span>
-                                                                <span class="caption grey--text">{{comment.created_at}}</span>
+                                                                <span class="caption grey--text">{{ comment.created_at | moment("from", "now") }}</span>
                                                             </v-layout>
                                                             <v-layout column>
                                                                 <span class="body-1">{{comment.content}}</span>
@@ -244,6 +244,7 @@
                                             name="postTitle"
                                             v-model="newPost.title"
                                             single-line
+                                            required
                                     ></v-text-field>
                                 </v-list-tile-sub-title>
                             </v-list-tile-content>
@@ -256,6 +257,7 @@
                                             name="postContent"
                                             v-model="newPost.content"
                                             single-line
+                                            required
                                     ></v-text-field>
                                 </v-list-tile-sub-title>
                             </v-list-tile-content>
@@ -519,7 +521,7 @@
 
         let authUserID = vm.$store.state.users.authenticatedUser.id;
         let newComment = vm.newPostComment;
-        let created_at = new Date(Date.now()).toLocaleString();
+        let created_at = new Date(Date.now())
         let user = vm.$store.state.users.authenticatedUser;
         let comment = {
           'post_id': postID,

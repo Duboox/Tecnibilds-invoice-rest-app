@@ -63,13 +63,17 @@ export default {
         let data = {
           grant_type: 'password',
           client_id: 2,
-          client_secret: 'PA54awpBfEbfr4h4eJoar4jMnmwU3RUPo7mKT6NE',
+          client_secret: '0NqPpvj7QDUfANeyMXqSzq9pgqcKDgievSfAQLub',
           username: loginDetails.email,
           password: loginDetails.password,
           remember: loginDetails.remember,
           scope: ''
         };
-        axios[config.loginMethod](config.apiUrl + config.loginRequest, data)
+        let header = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        };
+        axios[config.loginMethod](config.apiUrl + config.loginRequest, data, {headers: header})
             .then(response => {
               let responseData = response.data;
               let now = Date.now();

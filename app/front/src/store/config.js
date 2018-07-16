@@ -1,6 +1,6 @@
 export default {
   /* API URL */
-  apiUrl: 'http://127.0.0.1:8000',
+  apiUrl: 'http://api.tecnibilds.com.ve',
 
   /* USERS */
   loginMethod: 'post',

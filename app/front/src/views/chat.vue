@@ -51,7 +51,7 @@
                                                        {{ item.user.name }}
                                                    </span>
                                         <v-spacer></v-spacer>
-                                        <span class="caption grey--text">{{item.created_at}}</span>
+                                        <span class="caption grey--text">{{ item.created_at | moment("from", "now") }}</span>
                                     </v-layout>
                                 </v-list-tile-title>
                                 <v-list-tile-sub-title>{{item.message}}</v-list-tile-sub-title>
